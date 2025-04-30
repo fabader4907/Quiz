@@ -1,5 +1,6 @@
 public class Main {
-    //test
-    Samuel
+    public static void main(String[] args) {
+        new Frage1();
+    }
 
 }
