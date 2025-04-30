@@ -17,7 +17,7 @@ public class Basis extends JFrame {
     public Basis(String frage, String[] antworten/*, String bildPfad, String soundPfad*/) {
         // Fenster-Einstellungen
         setTitle("Quiz Frage");
-        setSize(1800, 1800);
+        setSize(2000, 2000);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
@@ -26,7 +26,7 @@ public class Basis extends JFrame {
 
         // Frage Label
         frageLabel = new JLabel(frage);
-        frageLabel.setFont(new Font("Arial", Font.BOLD, 16));
+        frageLabel.setFont(new Font("Arial", Font.BOLD, 50));
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.gridwidth = 2;

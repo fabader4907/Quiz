@@ -11,7 +11,7 @@ public class Frage1 extends Basis {
 
     public Frage1() {
         super("Erkenne das Intro!",
-                new String[]{"A", "B", "C", "Tiger"}
+                new String[]{"A", "B", "C", "D"}
                 // "bild.jpg",
                 // "sound.wav"
         );
