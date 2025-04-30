@@ -14,7 +14,7 @@ public class Basis extends JFrame {
     protected JButton weiterButton;
     protected Clip soundClip;
 
-    public Basis(String frage, String[] antworten, String bildPfad, String soundPfad) {
+    public Basis(String frage, String[] antworten/*, String bildPfad, String soundPfad*/) {
         // Fenster-Einstellungen
         setTitle("Quiz Frage");
         setSize(600, 500);
@@ -32,14 +32,14 @@ public class Basis extends JFrame {
         gbc.gridwidth = 2;
         add(frageLabel, gbc);
 
-        // Bild hinzufügen (optional)
+        /* Bild hinzufügen (optional)
         if (bildPfad != null && !bildPfad.isEmpty()) {
             ImageIcon icon = new ImageIcon(bildPfad);
             bildLabel = new JLabel(icon);
             gbc.gridy = 1;
             gbc.gridwidth = 2;
             add(bildLabel, gbc);
-        }
+        }*/
 
         // Antwortmöglichkeiten mit RadioButtons
         antwortGruppe = new ButtonGroup();
@@ -61,31 +61,17 @@ public class Basis extends JFrame {
         gbc.anchor = GridBagConstraints.EAST;
         add(weiterButton, gbc);
 
-        // Sound abspielen (optional)
+        /* Sound abspielen (optional)
         if (soundPfad != null && !soundPfad.isEmpty()) {
             playSound(soundPfad);
         }
+        */
 
-        // ActionListener für den "Weiter"-Button
-        weiterButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Überprüfen, welche Antwort gewählt wurde
-                for (JRadioButton button : antwortButtons) {
-                    if (button.isSelected()) {
-                        if (button.getText().equals("Tiger")) { // Angenommene richtige Antwort
-                            JOptionPane.showMessageDialog(null, "Richtig!");
-                        } else {
-                            JOptionPane.showMessageDialog(null, "Falsch! Das richtige Tier ist der Tiger.");
-                        }
-                        break;
-                    }
-                }
-            }
-        });
+
+        setVisible(true);
     }
 
-    // Funktion zum Abspielen eines Sounds
+    /*Funktion zum Abspielen eines Sounds
     private void playSound(String soundPfad) {
         try {
             File soundFile = new File(soundPfad);
@@ -97,4 +83,5 @@ public class Basis extends JFrame {
             System.err.println("Sound konnte nicht abgespielt werden: " + e.getMessage());
         }
     }
+    */
 }
