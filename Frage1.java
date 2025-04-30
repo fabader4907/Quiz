@@ -12,8 +12,8 @@ public class Frage1 extends Basis {
     public Frage1() {
         super("Erkenne das Intro!",
                 new String[]{"A", "B", "C", "D"}
-                //"bild.jpg",
-                //"sound.wav"
+                // "bild.jpg",
+                // "sound.wav"
         );
 
         countdownLabel = new JLabel("" + countdownValue, SwingConstants.CENTER);
@@ -38,7 +38,7 @@ public class Frage1 extends Basis {
                 } else if (countdownValue == 0) {
                     countdownLabel.setText("Los!");
                     countdownTimer.stop();
-                    new Timer(500, ev -> zeigeAntworten()).start();
+                    new Timer(1500, ev -> zeigeAntworten()).start();
                 }
             }
         });
@@ -58,7 +58,7 @@ public class Frage1 extends Basis {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     String ausgewaehlt = currentButton.getText();
-                    boolean istRichtig = ausgewaehlt.equals("Tiger");
+                    boolean istRichtig = ausgewaehlt.equals("D");
 
                     if (istRichtig) {
                         currentButton.setBorder(BorderFactory.createLineBorder(Color.GREEN, 4));
@@ -66,7 +66,7 @@ public class Frage1 extends Basis {
                         currentButton.setBorder(BorderFactory.createLineBorder(Color.RED, 4));
 
                         for (JButton b : antwortButtons) {
-                            if (b.getText().equals("Tiger")) {
+                            if (b.getText().equals("D")) {
                                 b.setBorder(BorderFactory.createLineBorder(Color.GREEN, 4));
                             }
                         }
@@ -80,4 +80,3 @@ public class Frage1 extends Basis {
         }
     }
 }
-
