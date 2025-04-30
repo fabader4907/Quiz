@@ -11,7 +11,7 @@ public class Frage1 extends Basis {
 
     public Frage1() {
         super("Erkenne das Intro!",
-                new String[]{"A", "B", "C", "D"}
+                new String[]{"A", "B", "C", "Tiger"}
                 // "bild.jpg",
                 // "sound.wav"
         );
@@ -38,7 +38,7 @@ public class Frage1 extends Basis {
                 } else if (countdownValue == 0) {
                     countdownLabel.setText("Los!");
                     countdownTimer.stop();
-                    new Timer(1500, ev -> zeigeAntworten()).start();
+                    new Timer(500, ev -> zeigeAntworten()).start();
                 }
             }
         });
@@ -65,6 +65,7 @@ public class Frage1 extends Basis {
                     } else {
                         currentButton.setBorder(BorderFactory.createLineBorder(Color.RED, 4));
 
+                        // Richtige Antwort markieren
                         for (JButton b : antwortButtons) {
                             if (b.getText().equals("D")) {
                                 b.setBorder(BorderFactory.createLineBorder(Color.GREEN, 4));
@@ -72,6 +73,7 @@ public class Frage1 extends Basis {
                         }
                     }
 
+                    // Buttons deaktivieren
                     for (JButton b : antwortButtons) {
                         b.setEnabled(false);
                     }
