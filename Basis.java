@@ -9,15 +9,15 @@ import java.io.IOException;
 public class Basis extends JFrame {
     protected JLabel frageLabel;
     protected JLabel bildLabel;
-    protected JRadioButton[] antwortButtons;
+    protected JButton[] antwortButtons;
     protected ButtonGroup antwortGruppe;
-    protected JButton weiterButton;
+    protected JButton button;
     protected Clip soundClip;
 
     public Basis(String frage, String[] antworten/*, String bildPfad, String soundPfad*/) {
         // Fenster-Einstellungen
         setTitle("Quiz Frage");
-        setSize(600, 500);
+        setSize(1800, 1800);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
@@ -41,11 +41,11 @@ public class Basis extends JFrame {
             add(bildLabel, gbc);
         }*/
 
-        // Antwortmöglichkeiten mit RadioButtons
+        // Antwortmöglichkeiten mit Buttons
         antwortGruppe = new ButtonGroup();
-        antwortButtons = new JRadioButton[antworten.length];
+        antwortButtons = new JButton[antworten.length];
         for (int i = 0; i < antworten.length; i++) {
-            antwortButtons[i] = new JRadioButton(antworten[i]);
+            antwortButtons[i] = new JButton(antworten[i]);
             antwortGruppe.add(antwortButtons[i]);
             gbc.gridy = 2 + i;
             gbc.gridx = 0;
@@ -53,13 +53,6 @@ public class Basis extends JFrame {
             add(antwortButtons[i], gbc);
         }
 
-        // Weiter-Button
-        weiterButton = new JButton("Weiter");
-        gbc.gridy = 2 + antworten.length;
-        gbc.gridx = 1;
-        gbc.gridwidth = 1;
-        gbc.anchor = GridBagConstraints.EAST;
-        add(weiterButton, gbc);
 
         /* Sound abspielen (optional)
         if (soundPfad != null && !soundPfad.isEmpty()) {

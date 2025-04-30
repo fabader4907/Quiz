@@ -3,7 +3,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class Frage1 extends Basis{
+public class Frage1 extends Basis {
 
     private JLabel countdownLabel;
     private Timer countdownTimer;
@@ -25,11 +25,10 @@ public class Frage1 extends Basis{
         gbc.insets = new Insets(10, 10, 10, 10);
         add(countdownLabel, gbc);
 
-        for (JRadioButton button : antwortButtons) {
+        for (JButton button : antwortButtons) {
             button.setVisible(false);
         }
 
-        weiterButton.setVisible(false);
         countdownTimer = new Timer(1500, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -39,40 +38,46 @@ public class Frage1 extends Basis{
                 } else if (countdownValue == 0) {
                     countdownLabel.setText("Los!");
                     countdownTimer.stop();
-                    new Timer (500, ev -> zeigeAntworten()).start();
+                    new Timer(500, ev -> zeigeAntworten()).start();
                 }
             }
         });
-
         countdownTimer.setInitialDelay(1500);
         countdownTimer.start();
-
-        // ActionListener für den "Weiter"-Button
-        weiterButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Überprüfen, welche Antwort gewählt wurde
-                for (JRadioButton button : antwortButtons) {
-                    if (button.isSelected()) {
-                        if (button.getText().equals("Tiger")) { // Angenommene richtige Antwort
-                            JOptionPane.showMessageDialog(null, "Richtig!");
-                        } else {
-                            JOptionPane.showMessageDialog(null, "Falsch! Das richtige Tier ist der Tiger.");
-                        }
-                        break;
-                    }
-                }
-            }
-        });
     }
 
     private void zeigeAntworten() {
         countdownLabel.setText("");
-        for (JRadioButton button : antwortButtons){
+
+        for (JButton button : antwortButtons) {
             button.setVisible(true);
+
+            final JButton currentButton = button;
+
+            currentButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    String ausgewaehlt = currentButton.getText();
+                    boolean istRichtig = ausgewaehlt.equals("Tiger");
+
+                    if (istRichtig) {
+                        currentButton.setBorder(BorderFactory.createLineBorder(Color.GREEN, 4));
+                    } else {
+                        currentButton.setBorder(BorderFactory.createLineBorder(Color.RED, 4));
+
+                        for (JButton b : antwortButtons) {
+                            if (b.getText().equals("Tiger")) {
+                                b.setBorder(BorderFactory.createLineBorder(Color.GREEN, 4));
+                            }
+                        }
+                    }
+
+                    for (JButton b : antwortButtons) {
+                        b.setEnabled(false);
+                    }
+                }
+            });
         }
-        weiterButton.setVisible(true);
     }
-
-
 }
+
