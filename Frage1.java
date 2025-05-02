@@ -8,25 +8,37 @@ public class Frage1 extends Basis {
     private JLabel countdownLabel;
     private Timer countdownTimer;
     private int countdownValue = 3;
+    private JLabel titelLabel;
+
 
     public Frage1() {
-        super("Erkenne das Intro!",
+        super("Lyric!",
                 new String[]{"A", "B", "C", "D"}
                 // "bild.jpg",
                 // "sound.wav"
         );
 
-        countdownLabel = new JLabel("" + countdownValue, SwingConstants.CENTER);
-        countdownLabel.setFont(new Font("Arial", Font.BOLD, 60));
+        // Statisches Label "Erkenne die Lyrics"
+        titelLabel = new JLabel("Erkenne die Lyrics", SwingConstants.CENTER);
+        titelLabel.setFont(new Font("Arial", Font.BOLD, 28));
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = 0;
-        gbc.gridy = 2;
+        gbc.gridy = 1;
         gbc.gridwidth = 2;
-        gbc.insets = new Insets(10, 10, 10, 10);
+        gbc.insets = new Insets(10, 10, 5, 10);
+        add(titelLabel, gbc);
+
+
+        // Dynamisches Countdown-Label
+        countdownLabel = new JLabel("" + countdownValue, SwingConstants.CENTER);
+        countdownLabel.setFont(new Font("Arial", Font.BOLD, 60));
+        gbc.gridy = 2;
+        gbc.insets = new Insets(5, 10, 20, 10);
         add(countdownLabel, gbc);
 
         for (JButton button : antwortButtons) {
             button.setVisible(false);
+            frageLabel.setVisible(false);
         }
 
         countdownTimer = new Timer(1500, new ActionListener() {
@@ -47,38 +59,62 @@ public class Frage1 extends Basis {
     }
 
     private void zeigeAntworten() {
-        countdownLabel.setText("");
+        countdownLabel.setText("");  // Countdown ausblenden
 
+        frageLabel.setVisible(true);
         for (JButton button : antwortButtons) {
             button.setVisible(true);
+            titelLabel.setVisible(false);
+        }
 
-            final JButton currentButton = button;
+        PointHandler ph = new PointHandler();
+        ph.start();
 
-            currentButton.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    String ausgewaehlt = currentButton.getText();
-                    boolean istRichtig = ausgewaehlt.equals("D");
+        for (JButton currentButton : antwortButtons) {
+            for (ActionListener al : currentButton.getActionListeners()) {
+                currentButton.removeActionListener(al);
+            }
 
-                    if (istRichtig) {
-                        currentButton.setBorder(BorderFactory.createLineBorder(Color.GREEN, 4));
-                    } else {
-                        currentButton.setBorder(BorderFactory.createLineBorder(Color.RED, 4));
+            currentButton.addActionListener(e -> {
+                for (JButton b : antwortButtons) {
+                    b.setEnabled(false);
+                }
 
-                        // Richtige Antwort markieren
-                        for (JButton b : antwortButtons) {
-                            if (b.getText().equals("D")) {
-                                b.setBorder(BorderFactory.createLineBorder(Color.GREEN, 4));
-                            }
+                int points = ph.getPoints();
+
+                String ausgewaehlt = currentButton.getText();
+                boolean istRichtig = ausgewaehlt.equals("D");
+
+                if (istRichtig) {
+                    currentButton.setBorder(BorderFactory.createLineBorder(Color.GREEN, 4));
+                } else {
+                    currentButton.setBorder(BorderFactory.createLineBorder(Color.RED, 4));
+                    for (JButton b : antwortButtons) {
+                        if (b.getText().equals("D")) {
+                            b.setBorder(BorderFactory.createLineBorder(Color.GREEN, 4));
                         }
                     }
-
-                    // Buttons deaktivieren
-                    for (JButton b : antwortButtons) {
-                        b.setEnabled(false);
-                    }
                 }
+
+                new Timer(3000, ev -> {
+                    ((Timer) ev.getSource()).stop();
+
+                    JOptionPane.showMessageDialog(
+                            Frage1.this,
+                            "Du hast " + points + " Punkte erreicht!",
+                            "Ergebnis",
+                            JOptionPane.INFORMATION_MESSAGE
+                    );
+
+                    //frageWechseln();
+                }).start();
             });
         }
+    }
+
+    private void frageWechseln() {
+        JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
+        topFrame.dispose();
+        new Frage2(); // Nächste Frage starten
     }
 }
