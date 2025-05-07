@@ -59,7 +59,7 @@ public class Frage1 extends Basis {
     }
 
     private void zeigeAntworten() {
-        countdownLabel.setText("");  // Countdown ausblenden
+        countdownLabel.setText("");
 
         frageLabel.setVisible(true);
         for (JButton button : antwortButtons) {
@@ -106,7 +106,7 @@ public class Frage1 extends Basis {
                             JOptionPane.INFORMATION_MESSAGE
                     );
 
-                    //frageWechseln();
+                    frageWechseln();
                 }).start();
             });
         }
@@ -115,6 +115,6 @@ public class Frage1 extends Basis {
     private void frageWechseln() {
         JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
         topFrame.dispose();
-        new Frage2(); // Nächste Frage starten
+        new Frage1(); // Nächste Frage starten
     }
 }
