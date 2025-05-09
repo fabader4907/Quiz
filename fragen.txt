@@ -13,3 +13,11 @@ B: Imagine
 C: Bohemian Rhapsody
 D: Hotel California
 Richtig: C
+
+3.
+Frage: Wer schrieb "Romeo und Julia"?
+A: Charles Dickens
+B: William Shakespeare
+C: Jane Austen
+D: Mark Twain
+Richtig: B

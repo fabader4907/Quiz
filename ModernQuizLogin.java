@@ -1,24 +1,25 @@
-// Importiere notwendige Klassen für GUI und Datenstruktur
 import javax.swing.*;
 import java.awt.*;
 import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 
-// Die Klasse "ModernQuizLogin" erweitert JFrame, um ein GUI-Fenster zu erstellen
+/**
+ * ModernQuizLogin ist das Haupt-Anmeldefenster für das Quizspiel.
+ * Benutzer können sich anmelden oder registrieren.
+ * Nach dem Spiel wird der Score gespeichert.
+ */
 public class ModernQuizLogin extends JFrame {
 
-    // Map zur Speicherung von Benutzernamen und Passwörtern
     private Map<String, String> userMap = new HashMap<>();
-
-    // GUI-Komponenten für Benutzereingabe und Anzeige von Nachrichten
     private JTextField usernameField;
     private JPasswordField passwordField;
     private JLabel msg;
 
-    // Konstruktor – baut das Anmeldefenster auf
+    private String aktuellerBenutzer; // Zum Speichern des angemeldeten Benutzernamens
+
     public ModernQuizLogin() {
-        loadUsers(); // Lade Benutzerdaten aus Datei
+        loadUsers();
 
         setTitle("Quiz Anmeldung");
         setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -47,17 +48,12 @@ public class ModernQuizLogin extends JFrame {
         passwordField = new JPasswordField();
         passwordField.setBackground(fieldColor);
         passwordField.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        passwordField.setEchoChar('•'); // Bullet-Zeichen
+        passwordField.setEchoChar('•');
 
-        // Checkbox zum Anzeigen des Passworts
         JCheckBox showPassword = new JCheckBox("Passwort anzeigen");
         showPassword.setBackground(bgColor);
         showPassword.addActionListener(e -> {
-            if (showPassword.isSelected()) {
-                passwordField.setEchoChar((char) 0); // Passwort sichtbar
-            } else {
-                passwordField.setEchoChar('•'); // Passwort versteckt
-            }
+            passwordField.setEchoChar(showPassword.isSelected() ? (char) 0 : '•');
         });
 
         msg = new JLabel("", SwingConstants.CENTER);
@@ -75,33 +71,24 @@ public class ModernQuizLogin extends JFrame {
         registerButton.setForeground(Color.WHITE);
         registerButton.setFont(new Font("Segoe UI", Font.BOLD, 12));
 
-        // Komponenten hinzufügen
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.gridwidth = 2;
         panel.add(title, gbc);
-
         gbc.gridy++;
         panel.add(new JLabel("Benutzername:"), gbc);
-
         gbc.gridy++;
         panel.add(usernameField, gbc);
-
         gbc.gridy++;
         panel.add(new JLabel("Passwort:"), gbc);
-
         gbc.gridy++;
         panel.add(passwordField, gbc);
-
         gbc.gridy++;
         panel.add(showPassword, gbc);
-
         gbc.gridy++;
         panel.add(loginButton, gbc);
-
         gbc.gridy++;
         panel.add(registerButton, gbc);
-
         gbc.gridy++;
         panel.add(msg, gbc);
 
@@ -112,25 +99,34 @@ public class ModernQuizLogin extends JFrame {
         setVisible(true);
     }
 
-    // Login-Verarbeitung
+    /**
+     * Verarbeitet die Anmeldung des Benutzers.
+     * Bei Erfolg wird das Quiz gestartet.
+     */
     private void handleLogin() {
         String user = usernameField.getText();
         String pass = new String(passwordField.getPassword());
 
         if (userMap.containsKey(user) && userMap.get(user).equals(pass)) {
+            aktuellerBenutzer = user; // Speichern des angemeldeten Benutzers
             dispose();
-            starteFrage1();
+            starteQuizGame();
         } else {
             msg.setText("Benutzername oder Passwort ist falsch!");
         }
     }
 
-    // Starte das Quiz (extern zu implementieren)
-    private void starteFrage1() {
-        new Frage1(); // Platzhalter
+    /**
+     * Platzhalter zum Start des Quiz-Spiels.
+     * Speichert am Ende einen Beispiel-Score.
+     */
+    private void starteQuizGame() {
+        new QuizGame();
     }
 
-    // Registrierungsfenster
+    /**
+     * Öffnet ein Fenster zur Benutzerregistrierung.
+     */
     private void openRegisterWindow() {
         JDialog registerDialog = new JDialog(this, "Benutzer registrieren", true);
         registerDialog.setSize(350, 200);
@@ -161,7 +157,7 @@ public class ModernQuizLogin extends JFrame {
                 info.setText("Benutzer existiert bereits!");
             } else {
                 userMap.put(newUser, newPass);
-                saveUsers(); // Daten dauerhaft speichern
+                saveUsers();
                 info.setText("Registrierung erfolgreich!");
                 registerDialog.dispose();
                 msg.setText("Bitte melde dich nun an.");
@@ -173,7 +169,9 @@ public class ModernQuizLogin extends JFrame {
         registerDialog.setVisible(true);
     }
 
-    // Speichert alle Benutzerdaten in eine Datei
+    /**
+     * Speichert alle registrierten Benutzer in users.txt.
+     */
     private void saveUsers() {
         try (PrintWriter writer = new PrintWriter(new FileWriter("users.txt"))) {
             for (Map.Entry<String, String> entry : userMap.entrySet()) {
@@ -184,7 +182,9 @@ public class ModernQuizLogin extends JFrame {
         }
     }
 
-    // Lädt Benutzerdaten aus Datei
+    /**
+     * Lädt Benutzerdaten aus users.txt.
+     */
     private void loadUsers() {
         File file = new File("users.txt");
         if (!file.exists()) return;
@@ -202,7 +202,23 @@ public class ModernQuizLogin extends JFrame {
         }
     }
 
-    // Main-Methode zum Starten der Anwendung
+    /**
+     * Speichert Name und Punktzahl in scores.txt.
+     *
+     * @param name   Spielername
+     * @param punkte Punktzahl
+     */
+    private void speichereScore(String name, int punkte) {
+        try (PrintWriter writer = new PrintWriter(new FileWriter("scores.txt", true))) {
+            writer.println(name + ":" + punkte);
+        } catch (IOException e) {
+            System.out.println("Fehler beim Speichern der Punktzahl.");
+        }
+    }
+
+    /**
+     * Hauptmethode zum Starten der App.
+     */
     public static void main(String[] args) {
         new ModernQuizLogin();
     }

@@ -7,7 +7,7 @@ public class PointHandler {
 
         thread = new Thread(() -> {
             try {
-                //Thread.sleep(5000); // 5 Sekunden warten, bevor es losgeht
+                Thread.sleep(3000); // 5 Sekunden warten, bevor es losgeht
                 while (points > 0) {
                     points -= 100;
                     Thread.sleep(1000); // alle 1 Sekunde 50 abziehen
