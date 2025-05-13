@@ -1,3 +1,5 @@
+package Quiz;
+
 public class PointHandler {
     private int points;
     private Thread thread;

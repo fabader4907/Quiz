@@ -1,3 +1,5 @@
+package Quiz;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
@@ -21,7 +23,7 @@ public class Leaderboard {
         fenster.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Jetzt als Hauptfenster
 
         String[] spalten = {"Spieler", "Punkte"};
-        Object[][] daten = ladeUndSortiereDaten("scores.txt");
+        Object[][] daten = ladeUndSortiereDaten("Quiz/scores.txt");
 
         JTable tabelle = new JTable(new DefaultTableModel(daten, spalten));
         JScrollPane scrollPane = new JScrollPane(tabelle);

@@ -1,3 +1,5 @@
+package Quiz;
+
 import javax.swing.*;
 import java.awt.*;
 import java.io.*;
@@ -173,7 +175,7 @@ public class ModernQuizLogin extends JFrame {
      * Speichert alle registrierten Benutzer in users.txt.
      */
     private void saveUsers() {
-        try (PrintWriter writer = new PrintWriter(new FileWriter("users.txt"))) {
+        try (PrintWriter writer = new PrintWriter(new FileWriter("Quiz/users.txt"))) {
             for (Map.Entry<String, String> entry : userMap.entrySet()) {
                 writer.println(entry.getKey() + ":" + entry.getValue());
             }
@@ -186,7 +188,7 @@ public class ModernQuizLogin extends JFrame {
      * Lädt Benutzerdaten aus users.txt.
      */
     private void loadUsers() {
-        File file = new File("users.txt");
+        File file = new File("Quiz/users.txt");
         if (!file.exists()) return;
 
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
@@ -209,7 +211,7 @@ public class ModernQuizLogin extends JFrame {
      * @param punkte Punktzahl
      */
     private void speichereScore(String name, int punkte) {
-        try (PrintWriter writer = new PrintWriter(new FileWriter("scores.txt", true))) {
+        try (PrintWriter writer = new PrintWriter(new FileWriter("Quiz/scores.txt", true))) {
             writer.println(name + ":" + punkte);
         } catch (IOException e) {
             System.out.println("Fehler beim Speichern der Punktzahl.");

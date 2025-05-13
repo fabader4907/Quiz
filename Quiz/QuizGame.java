@@ -1,6 +1,7 @@
+package Quiz;
+
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.List;
@@ -20,7 +21,7 @@ public class QuizGame extends Basis {
         super("Lyric!", new String[]{"A", "B", "C", "D"});
 
         try {
-            fragenListe = FragenLader.ladeFragen("fragen.txt");
+            fragenListe = FragenLader.ladeFragen("Quiz/fragen.txt");
         } catch (IOException e) {
             JOptionPane.showMessageDialog(this, "Fehler beim Laden der Fragen: " + e.getMessage());
             return;

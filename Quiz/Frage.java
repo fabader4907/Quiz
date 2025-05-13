@@ -1,3 +1,5 @@
+package Quiz;
+
 public class Frage {
     public String frageText;
     public String[] antworten = new String[4]; // A, B, C, D
