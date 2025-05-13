@@ -15,7 +15,7 @@ public class Leaderboard {
      * Öffnet das Leaderboard in einem neuen eigenen JFrame.
      */
     public Leaderboard() {
-        JFrame fenster = new JFrame("🏆 Leaderboard");
+        JFrame fenster = new JFrame("Leaderboard");
         fenster.setSize(400, 300);
         fenster.setLocationRelativeTo(null);
         fenster.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Jetzt als Hauptfenster
@@ -66,10 +66,5 @@ public class Leaderboard {
         return daten;
     }
 
-    /**
-     * Einstiegspunkt zum Starten des Leaderboards als Hauptanwendung.
-     *
-     * @param args wird nicht verwendet.
-     */
 
 }
