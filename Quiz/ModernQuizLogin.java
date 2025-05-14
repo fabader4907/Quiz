@@ -1,6 +1,7 @@
 package Quiz;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.io.*;
 import java.util.HashMap;
@@ -24,7 +25,7 @@ public class ModernQuizLogin extends JFrame {
         loadUsers();
 
         setTitle("Quiz Anmeldung");
-        setExtendedState(JFrame.MAXIMIZED_BOTH);
+        setExtendedState(JFrame.MAXIMIZED_BOTH); // Fenster auf maximale Größe setzen
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
@@ -36,42 +37,47 @@ public class ModernQuizLogin extends JFrame {
         panel.setBackground(bgColor);
         panel.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(10, 10, 10, 10);
+        gbc.insets = new Insets(20, 20, 20, 20); // Abstände erhöht
         gbc.fill = GridBagConstraints.HORIZONTAL;
 
         JLabel title = new JLabel("Willkommen beim Quiz", SwingConstants.CENTER);
-        title.setFont(new Font("Segoe UI", Font.BOLD, 20));
+        title.setFont(new Font("Segoe UI", Font.BOLD, 36)); // Schriftgröße weiter erhöht
         title.setForeground(new Color(33, 37, 41));
 
         usernameField = new JTextField();
         usernameField.setBackground(fieldColor);
-        usernameField.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        usernameField.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15)); // Padding erhöht
+        usernameField.setPreferredSize(new Dimension(300, 50)); // Größe des Eingabefelds erhöht
 
         passwordField = new JPasswordField();
         passwordField.setBackground(fieldColor);
-        passwordField.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        passwordField.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15)); // Padding erhöht
+        passwordField.setPreferredSize(new Dimension(300, 50)); // Größe des Eingabefelds erhöht
         passwordField.setEchoChar('•');
 
         JCheckBox showPassword = new JCheckBox("Passwort anzeigen");
         showPassword.setBackground(bgColor);
+        showPassword.setFont(new Font("Segoe UI", Font.PLAIN, 18)); // Schriftgröße erhöht
         showPassword.addActionListener(e -> {
             passwordField.setEchoChar(showPassword.isSelected() ? (char) 0 : '•');
         });
 
         msg = new JLabel("", SwingConstants.CENTER);
         msg.setForeground(Color.RED);
-        msg.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+        msg.setFont(new Font("Segoe UI", Font.PLAIN, 18)); // Schriftgröße erhöht
 
         JButton loginButton = new JButton("Anmelden");
         loginButton.setBackground(buttonColor);
         loginButton.setForeground(Color.WHITE);
-        loginButton.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        loginButton.setFont(new Font("Segoe UI", Font.BOLD, 20)); // Schriftgröße erhöht
         loginButton.setFocusPainted(false);
+        loginButton.setPreferredSize(new Dimension(200, 60)); // Größe des Buttons erhöht
 
         JButton registerButton = new JButton("Registrieren");
         registerButton.setBackground(new Color(100, 180, 100));
         registerButton.setForeground(Color.WHITE);
-        registerButton.setFont(new Font("Segoe UI", Font.BOLD, 12));
+        registerButton.setFont(new Font("Segoe UI", Font.BOLD, 18)); // Schriftgröße erhöht
+        registerButton.setPreferredSize(new Dimension(200, 60)); // Größe des Buttons erhöht
 
         gbc.gridx = 0;
         gbc.gridy = 0;
@@ -126,21 +132,25 @@ public class ModernQuizLogin extends JFrame {
         new Hauptmenu(aktuellerBenutzer);  // NEU: Statt direkt Spiel
     }
 
-
     /**
      * Öffnet ein Fenster zur Benutzerregistrierung.
      */
     private void openRegisterWindow() {
         JDialog registerDialog = new JDialog(this, "Benutzer registrieren", true);
-        registerDialog.setSize(350, 200);
+        registerDialog.setSize(500, 300); // Dialoggröße erhöht
         registerDialog.setLocationRelativeTo(this);
-        registerDialog.setLayout(new GridLayout(4, 2, 10, 10));
+        registerDialog.setLayout(new GridLayout(4, 2, 15, 15)); // Abstände erhöht
 
         JTextField newUserField = new JTextField();
+        newUserField.setPreferredSize(new Dimension(250, 40)); // Größe des Eingabefelds erhöht
         JPasswordField newPassField = new JPasswordField();
+        newPassField.setPreferredSize(new Dimension(250, 40)); // Größe des Eingabefelds erhöht
         JLabel info = new JLabel("");
+        info.setFont(new Font("Segoe UI", Font.PLAIN, 16)); // Schriftgröße erhöht
 
         JButton saveButton = new JButton("Speichern");
+        saveButton.setFont(new Font("Segoe UI", Font.BOLD, 16)); // Schriftgröße erhöht
+        saveButton.setPreferredSize(new Dimension(150, 50)); // Größe des Buttons erhöht
 
         registerDialog.add(new JLabel("Benutzername:"));
         registerDialog.add(newUserField);
