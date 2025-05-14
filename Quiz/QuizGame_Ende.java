@@ -6,19 +6,20 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.List;
 
-public class QuizGame extends Basis {
+public class QuizGame_Ende extends Basis {
 
     private List<Frage> fragenListe;
     private int aktuelleFrage = 0;
     private JLabel countdownLabel;
     private Timer countdownTimer;
-    private int countdownValue = 3;
+    private int countdownValue = 5;
     private JLabel titelLabel;
-    private int totalPoints = 0; // Variable to store total points
+    private int totalPoints; // Variable to store total points
     private JLabel pointsLabel; // Label to display total points
 
-    public QuizGame() {
+    public QuizGame_Ende(int totalPoints) {
         super("Lyric!", new String[]{"A", "B", "C", "D"});
+        this.totalPoints = totalPoints;
 
         try {
             fragenListe = FragenLader.ladeFragen("Quiz/fragen.txt");
@@ -31,7 +32,7 @@ public class QuizGame extends Basis {
         getContentPane().setBackground(new Color(30, 30, 30));
 
         // Titel
-        titelLabel = new JLabel("Erkenne die Lyrics", SwingConstants.CENTER);
+        titelLabel = new JLabel("Beweise dein können! Vervollständige die Lyrics", SwingConstants.CENTER);
         titelLabel.setFont(new Font("Arial", Font.BOLD, 28));
         titelLabel.setForeground(new Color(200, 200, 200)); // Light gray text
         GridBagConstraints gbc = new GridBagConstraints();
@@ -72,24 +73,25 @@ public class QuizGame extends Basis {
             button.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         }
 
-        countdownTimer = new Timer(1500, e -> {
+        countdownTimer = new Timer(1000, e -> {
             countdownValue--;
             if (countdownValue > 0) {
                 countdownLabel.setText("" + countdownValue);
             } else if (countdownValue == 0) {
                 countdownLabel.setText("Los!");
                 countdownTimer.stop();
-                new Timer(500, ev -> zeigeAntworten()).start();
+                zeigeAntworten();
+                new Timer(1000, e1 -> {});
             }
         });
-        countdownTimer.setInitialDelay(1500);
+        countdownTimer.setInitialDelay(1000);
         countdownTimer.start();
     }
 
     private void zeigeAntworten() {
         if (aktuelleFrage >= fragenListe.size()) {
-            JOptionPane.showMessageDialog(this, "Keine weiteren Fragen!", "Fertig", JOptionPane.INFORMATION_MESSAGE);
-            System.exit(0);
+            JOptionPane.showMessageDialog(this, "Du hast es geschafft!", "Fertig", JOptionPane.INFORMATION_MESSAGE);
+            new Leaderboard();
             return;
         }
 
@@ -155,7 +157,7 @@ public class QuizGame extends Basis {
                 Timer delayTimer = new Timer(3000, ev -> {
                     // Punkte zeigen und nächste Frage
                     JOptionPane.showMessageDialog(
-                            QuizGame.this,
+                            QuizGame_Ende.this,
                             "Du hast " + points + " Punkte erreicht!",
                             "Ergebnis",
                             JOptionPane.INFORMATION_MESSAGE

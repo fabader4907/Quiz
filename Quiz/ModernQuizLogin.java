@@ -123,8 +123,9 @@ public class ModernQuizLogin extends JFrame {
      * Speichert am Ende einen Beispiel-Score.
      */
     private void starteQuizGame() {
-        new QuizGame();
+        new Hauptmenü(aktuellerBenutzer);  // NEU: Statt direkt Spiel
     }
+
 
     /**
      * Öffnet ein Fenster zur Benutzerregistrierung.
