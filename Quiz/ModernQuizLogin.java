@@ -123,7 +123,7 @@ public class ModernQuizLogin extends JFrame {
      * Speichert am Ende einen Beispiel-Score.
      */
     private void starteQuizGame() {
-        new Hauptmenü(aktuellerBenutzer);  // NEU: Statt direkt Spiel
+        new Hauptmenu(aktuellerBenutzer);  // NEU: Statt direkt Spiel
     }
 
 
