@@ -1,96 +1,95 @@
 package Quiz;
 
+import javax.swing.*;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
+import java.awt.*;
 import java.io.*;
 import java.util.*;
+import java.util.List;
 
 public class Leaderboard {
 
     private static final String SCORE_FILE = "Quiz/scores.txt";
 
-    /**
-     * Fügt den Spieler mit seinen Punkten hinzu oder aktualisiert seine Punktzahl, wenn der Spieler bereits existiert.
-     */
-    public static void updateLeaderboard(String username, int newScore) {
-        // Daten einlesen und aktualisieren
-        List<String[]> datenListe = ladeDaten(SCORE_FILE);
-        boolean benutzerGefunden = false;
-
-        // Überprüfen, ob der Benutzer bereits in der Liste ist und seine Punktzahl aktualisieren
-        for (String[] eintrag : datenListe) {
-            if (eintrag[0].equals(username)) {
-                eintrag[1] = String.valueOf(newScore);  // Punktzahl aktualisieren
-                benutzerGefunden = true;
-                break;
-            }
-        }
-
-        // Wenn der Benutzer nicht gefunden wurde, füge einen neuen Eintrag hinzu
-        if (!benutzerGefunden) {
-            datenListe.add(new String[]{username, String.valueOf(newScore)});
-        }
-
-        // Liste nach Punkten sortieren
-        datenListe.sort((a, b) -> Integer.compare(Integer.parseInt(b[1]), Integer.parseInt(a[1])));
-
-        // Daten zurück in die Datei schreiben
-        schreibeDaten(SCORE_FILE, datenListe);
+    public Leaderboard() {
+        zeigeLeaderboard();
     }
 
-    /**
-     * Lädt die Punktedaten aus der Datei.
-     */
-    private static List<String[]> ladeDaten(String dateiname) {
-        List<String[]> datenListe = new ArrayList<>();
-        try (BufferedReader reader = new BufferedReader(new FileReader(dateiname))) {
+    private void zeigeLeaderboard() {
+        Map<String, Integer> scoreMap = new HashMap<>();
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(SCORE_FILE))) {
             String zeile;
             while ((zeile = reader.readLine()) != null) {
                 String[] teile = zeile.split(":");
                 if (teile.length == 2) {
-                    datenListe.add(new String[]{teile[0], teile[1]});
+                    String name = teile[0].trim();
+                    int punkte = Integer.parseInt(teile[1].trim());
+                    scoreMap.put(name, Math.max(scoreMap.getOrDefault(name, 0), punkte));
                 }
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Fehler beim Lesen der Datei!", "Fehler", JOptionPane.ERROR_MESSAGE);
+            return;
         }
-        return datenListe;
-    }
 
-    /**
-     * Schreibt die Punktedaten in die Datei.
-     */
-    private static void schreibeDaten(String dateiname, List<String[]> datenListe) {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(dateiname))) {
-            for (String[] eintrag : datenListe) {
-                writer.write(eintrag[0] + ":" + eintrag[1]);
-                writer.newLine();
+        List<Map.Entry<String, Integer>> eintraege = new ArrayList<>(scoreMap.entrySet());
+        eintraege.sort((a, b) -> Integer.compare(b.getValue(), a.getValue()));
+
+        Object[][] daten = new Object[eintraege.size()][2];
+        for (int i = 0; i < eintraege.size(); i++) {
+            daten[i][0] = eintraege.get(i).getKey();
+            daten[i][1] = eintraege.get(i).getValue();
+        }
+
+        // GUI Setup
+        JFrame fenster = new JFrame("🏆 Leaderboard");
+        fenster.setSize(500, 400);
+        fenster.setLocationRelativeTo(null);
+        fenster.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        fenster.setBackground(Color.decode("#f4f4f4"));
+
+        String[] spalten = {"Spieler", "Punkte"};
+        JTable tabelle = new JTable(new DefaultTableModel(daten, spalten)) {
+            public boolean isCellEditable(int row, int column) {
+                return false;
             }
-        } catch (IOException e) {
-            e.printStackTrace();
+        };
+
+        // Design: Tabelle
+        tabelle.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+        tabelle.setRowHeight(35);
+        tabelle.setGridColor(Color.LIGHT_GRAY);
+        tabelle.setShowGrid(false);
+        tabelle.setSelectionBackground(new Color(220, 235, 255));
+
+        // Header Design
+        JTableHeaderDesign(tabelle);
+
+        // Zentrierte Zellen
+        DefaultTableCellRenderer zentriert = new DefaultTableCellRenderer();
+        zentriert.setHorizontalAlignment(JLabel.CENTER);
+        for (int i = 0; i < tabelle.getColumnCount(); i++) {
+            tabelle.getColumnModel().getColumn(i).setCellRenderer(zentriert);
         }
+
+        // ScrollPane mit Padding
+        JScrollPane scrollPane = new JScrollPane(tabelle);
+        scrollPane.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
+
+        fenster.add(scrollPane, BorderLayout.CENTER);
+        fenster.getContentPane().setBackground(Color.decode("#ffffff"));
+        fenster.setVisible(true);
     }
 
     /**
-     * Öffnet das Leaderboard in einem neuen JFrame.
+     * Custom Header-Design für moderne Optik.
      */
-    public Leaderboard() {
-        // Hier wird das GUI mit dem Leaderboard angezeigt
-        // Details wie im vorherigen Code
-    }
-
-    /**
-     * Liest und sortiert die Punktdaten für die Anzeige.
-     */
-    private Object[][] ladeUndSortiereDaten(String dateiname) {
-        List<String[]> datenListe = ladeDaten(dateiname);
-
-        // Sortieren der Liste nach Punkten in absteigender Reihenfolge
-        datenListe.sort((a, b) -> Integer.compare(Integer.parseInt(b[1]), Integer.parseInt(a[1])));
-
-        Object[][] daten = new Object[datenListe.size()][2];
-        for (int i = 0; i < datenListe.size(); i++) {
-            daten[i][0] = datenListe.get(i)[0];
-            daten[i][1] = datenListe.get(i)[1];
-        }
-        return daten;
+    private void JTableHeaderDesign(JTable tabelle) {
+        tabelle.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 17));
+        tabelle.getTableHeader().setOpaque(true);
+        tabelle.getTableHeader().setBackground(new Color(240, 240, 240));
+        tabelle.getTableHeader().setForeground(Color.DARK_GRAY);
     }
 }

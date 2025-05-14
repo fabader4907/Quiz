@@ -5,47 +5,88 @@ import java.awt.*;
 
 public class Hauptmenü extends JFrame {
 
+    private final Color bgColor = new Color(245, 250, 255);
+    private final Color buttonIndigo = new Color(99, 102, 241);
+    private final Color buttonGreen = new Color(16, 185, 129);
+    private final Color buttonYellow = new Color(245, 158, 11);
+    private final Color buttonRed = new Color(239, 68, 68);
+
     public Hauptmenü(String benutzername) {
-        setTitle("Quiz TUFF");
+        setTitle("Hauptmenü");
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
-        Color bgColor = new Color(240, 248, 255);
-        Color buttonColor = new Color(0, 123, 255);
-        Color sidebarColor = new Color(220, 235, 250);
-        Font buttonFont = new Font("Segoe UI", Font.BOLD, 16);
-
         JPanel mainPanel = new JPanel(new BorderLayout());
         mainPanel.setBackground(bgColor);
 
-        // Top Left: TUFF Logo
-        JLabel tuffLabel = new JLabel("TUFF");
-        tuffLabel.setFont(new Font("Segoe UI", Font.ITALIC, 28));
-        tuffLabel.setForeground(new Color(60, 60, 60));
-        JPanel tuffPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        tuffPanel.setBackground(bgColor);
-        tuffPanel.add(tuffLabel);
-        mainPanel.add(tuffPanel, BorderLayout.NORTH);
+        mainPanel.add(createTopPanel(benutzername), BorderLayout.NORTH);
+        mainPanel.add(createCenterPanel(), BorderLayout.CENTER);
 
-        // Sidebar left (Leaderboard, Spieleranzahl, Abmelden)
-        JPanel leftPanel = new JPanel();
-        leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
-        leftPanel.setBackground(sidebarColor);
-        leftPanel.setPreferredSize(new Dimension(250, getHeight()));
+        add(mainPanel);
+        setVisible(true);
+    }
 
-        JButton leaderboardBtn = createSidebarButton("🏆 Leaderboard", buttonFont);
-        JButton playerCountBtn = createSidebarButton("👥 Spieleranzahl", buttonFont);
-        JButton logoutBtn = createSidebarButton("🚪 Abmelden", new Font("Segoe UI", Font.PLAIN, 14));
-        logoutBtn.setBackground(new Color(200, 0, 0));
+    private JPanel createTopPanel(String benutzername) {
+        JPanel panel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        panel.setBackground(bgColor);
+
+        JLabel nameLabel = new JLabel("Hallo, " + benutzername);
+        nameLabel.setFont(new Font("Segoe UI", Font.BOLD, 30));
+
+        ImageIcon avatarIcon = new ImageIcon("Quiz/img/avatar.jpg");
+        Image avatarImage = avatarIcon.getImage().getScaledInstance(70, 70, Image.SCALE_SMOOTH);
+        JLabel avatarLabel = new JLabel(new ImageIcon(avatarImage));
+
+        panel.add(avatarLabel);
+        panel.add(Box.createHorizontalStrut(14));
+        panel.add(nameLabel);
+        return panel;
+    }
+
+    private JPanel createCenterPanel() {
+        JPanel centerPanel = new JPanel(new GridBagLayout());
+        centerPanel.setBackground(bgColor);
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(20, 20, 20, 20);
+        gbc.gridx = 0;
+        gbc.anchor = GridBagConstraints.CENTER;
+
+        // Zeile 1: Quiz & Leaderboard
+        JPanel buttonRow1 = new JPanel(new FlowLayout(FlowLayout.CENTER, 50, 0));
+        buttonRow1.setBackground(bgColor);
+        JButton quizBtn = createStyledButton("🎯 Quiz starten", buttonIndigo);
+        JButton leaderboardBtn = createStyledButton("🏆 Leaderboard anzeigen", buttonGreen);
+        buttonRow1.add(quizBtn);
+        buttonRow1.add(leaderboardBtn);
+        gbc.gridy = 0;
+        centerPanel.add(buttonRow1, gbc);
+
+        // Zeile 2: Spieleranzahl
+        gbc.gridy++;
+        JButton playerCountBtn = createStyledButton("👥 Spieleranzahl anzeigen", buttonYellow);
+        centerPanel.add(playerCountBtn, gbc);
+
+        // Zeile 3: Abmelden – zentriert und separat
+        gbc.gridy++;
+        JButton logoutBtn = createStyledButton("🚪 Abmelden", buttonRed);
+        logoutBtn.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+        logoutBtn.setPreferredSize(new Dimension(300, 60));
+        centerPanel.add(logoutBtn, gbc);
+
+        // Aktionen
+        quizBtn.addActionListener(e -> {
+            dispose();
+            new QuizGame_Start();
+        });
 
         leaderboardBtn.addActionListener(e -> {
-            JOptionPane.showMessageDialog(this, "Leaderboard folgt noch!");
+            JOptionPane.showMessageDialog(this, "Leaderboard kommt noch.");
         });
 
         playerCountBtn.addActionListener(e -> {
             int count = UserManager.ladeBenutzeranzahl();
-            JOptionPane.showMessageDialog(this, "Registrierte Spieler: " + count);
+            JOptionPane.showMessageDialog(this, "Spieleranzahl: " + count);
         });
 
         logoutBtn.addActionListener(e -> {
@@ -53,60 +94,17 @@ public class Hauptmenü extends JFrame {
             new ModernQuizLogin();
         });
 
-        leftPanel.add(Box.createVerticalStrut(100));
-        leftPanel.add(leaderboardBtn);
-        leftPanel.add(Box.createVerticalStrut(20));
-        leftPanel.add(playerCountBtn);
-        leftPanel.add(Box.createVerticalStrut(200));
-        leftPanel.add(logoutBtn);
-
-        mainPanel.add(leftPanel, BorderLayout.WEST);
-
-        // Center Area mit Quiz-Start-Button & Musikbild
-        JPanel centerPanel = new JPanel(new GridBagLayout());
-        centerPanel.setBackground(bgColor);
-        GridBagConstraints gbc = new GridBagConstraints();
-
-        JButton startBtn = new JButton("🎯 Quiz starten");
-        startBtn.setFont(new Font("Segoe UI", Font.BOLD, 24));
-        startBtn.setBackground(buttonColor);
-        startBtn.setForeground(Color.WHITE);
-        startBtn.setPreferredSize(new Dimension(300, 70));
-        startBtn.setFocusPainted(false);
-
-        startBtn.addActionListener(e -> {
-            dispose();
-            new QuizGame_Start();
-        });
-
-        gbc.gridx = 1;
-        gbc.gridy = 0;
-        centerPanel.add(startBtn, gbc);
-
-        // Musik-Bild links neben dem Button
-        try {
-            ImageIcon musikIcon = new ImageIcon("Quiz/img/musik.jpg"); // dein Bild hier einfügen
-            Image scaledImage = musikIcon.getImage().getScaledInstance(150, 150, Image.SCALE_SMOOTH);
-            JLabel musikLabel = new JLabel(new ImageIcon(scaledImage));
-            gbc.gridx = 0;
-            centerPanel.add(musikLabel, gbc);
-        } catch (Exception ex) {
-            System.out.println("Bild konnte nicht geladen werden.");
-        }
-
-        mainPanel.add(centerPanel, BorderLayout.CENTER);
-        add(mainPanel);
-        setVisible(true);
+        return centerPanel;
     }
 
-    private JButton createSidebarButton(String text, Font font) {
+    private JButton createStyledButton(String text, Color bg) {
         JButton btn = new JButton(text);
-        btn.setAlignmentX(Component.CENTER_ALIGNMENT);
-        btn.setMaximumSize(new Dimension(200, 50));
-        btn.setFont(font);
-        btn.setBackground(new Color(0, 123, 255));
+        btn.setFont(new Font("Segoe UI", Font.BOLD, 20));
+        btn.setBackground(bg);
         btn.setForeground(Color.WHITE);
         btn.setFocusPainted(false);
+        btn.setBorder(BorderFactory.createEmptyBorder(15, 30, 15, 30));
+        btn.setPreferredSize(new Dimension(300, 70));
         return btn;
     }
 }
