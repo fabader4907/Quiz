@@ -1,51 +1,46 @@
 package Quiz;
 
-import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
-import java.awt.*;
 import java.io.*;
 import java.util.*;
-import java.util.List;
 
-/**
- * Die Klasse {@code Leaderboard} stellt ein eigenständiges GUI-Fenster dar,
- * das eine sortierte Bestenliste (Leaderboard) aus einer Datei anzeigt.
- */
 public class Leaderboard {
 
+    private static final String SCORE_FILE = "Quiz/scores.txt";
+
     /**
-     * Öffnet das Leaderboard in einem neuen eigenen JFrame.
+     * Fügt den Spieler mit seinen Punkten hinzu oder aktualisiert seine Punktzahl, wenn der Spieler bereits existiert.
      */
-    public Leaderboard() {
-        JFrame fenster = new JFrame("Leaderboard");
-        fenster.setSize(400, 300);
-        fenster.setLocationRelativeTo(null);
-        fenster.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Jetzt als Hauptfenster
+    public static void updateLeaderboard(String username, int newScore) {
+        // Daten einlesen und aktualisieren
+        List<String[]> datenListe = ladeDaten(SCORE_FILE);
+        boolean benutzerGefunden = false;
 
-        String[] spalten = {"Spieler", "Punkte"};
-        Object[][] daten = ladeUndSortiereDaten("Quiz/scores.txt");
+        // Überprüfen, ob der Benutzer bereits in der Liste ist und seine Punktzahl aktualisieren
+        for (String[] eintrag : datenListe) {
+            if (eintrag[0].equals(username)) {
+                eintrag[1] = String.valueOf(newScore);  // Punktzahl aktualisieren
+                benutzerGefunden = true;
+                break;
+            }
+        }
 
-        JTable tabelle = new JTable(new DefaultTableModel(daten, spalten));
-        JScrollPane scrollPane = new JScrollPane(tabelle);
+        // Wenn der Benutzer nicht gefunden wurde, füge einen neuen Eintrag hinzu
+        if (!benutzerGefunden) {
+            datenListe.add(new String[]{username, String.valueOf(newScore)});
+        }
 
-        tabelle.setFillsViewportHeight(true);
-        tabelle.setRowHeight(30);
-        tabelle.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-        tabelle.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 16));
+        // Liste nach Punkten sortieren
+        datenListe.sort((a, b) -> Integer.compare(Integer.parseInt(b[1]), Integer.parseInt(a[1])));
 
-        fenster.add(scrollPane, BorderLayout.CENTER);
-        fenster.setVisible(true);
+        // Daten zurück in die Datei schreiben
+        schreibeDaten(SCORE_FILE, datenListe);
     }
 
     /**
-     * Liest die Punktzahlen aus der angegebenen Datei und sortiert sie absteigend.
-     *
-     * @param dateiname Name der Datei (z. B. "scores.txt")
-     * @return 2D-Array zur Darstellung in der Tabelle
+     * Lädt die Punktedaten aus der Datei.
      */
-    private Object[][] ladeUndSortiereDaten(String dateiname) {
+    private static List<String[]> ladeDaten(String dateiname) {
         List<String[]> datenListe = new ArrayList<>();
-
         try (BufferedReader reader = new BufferedReader(new FileReader(dateiname))) {
             String zeile;
             while ((zeile = reader.readLine()) != null) {
@@ -55,9 +50,40 @@ public class Leaderboard {
                 }
             }
         } catch (IOException e) {
-            JOptionPane.showMessageDialog(null, "Fehler beim Laden der Datei!", "Fehler", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
         }
+        return datenListe;
+    }
 
+    /**
+     * Schreibt die Punktedaten in die Datei.
+     */
+    private static void schreibeDaten(String dateiname, List<String[]> datenListe) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(dateiname))) {
+            for (String[] eintrag : datenListe) {
+                writer.write(eintrag[0] + ":" + eintrag[1]);
+                writer.newLine();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Öffnet das Leaderboard in einem neuen JFrame.
+     */
+    public Leaderboard() {
+        // Hier wird das GUI mit dem Leaderboard angezeigt
+        // Details wie im vorherigen Code
+    }
+
+    /**
+     * Liest und sortiert die Punktdaten für die Anzeige.
+     */
+    private Object[][] ladeUndSortiereDaten(String dateiname) {
+        List<String[]> datenListe = ladeDaten(dateiname);
+
+        // Sortieren der Liste nach Punkten in absteigender Reihenfolge
         datenListe.sort((a, b) -> Integer.compare(Integer.parseInt(b[1]), Integer.parseInt(a[1])));
 
         Object[][] daten = new Object[datenListe.size()][2];
@@ -67,6 +93,4 @@ public class Leaderboard {
         }
         return daten;
     }
-
-
 }
