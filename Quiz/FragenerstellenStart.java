@@ -128,11 +128,13 @@ public class FragenerstellenStart extends JFrame {
             out.println("C: " + antworten[2]);
             out.println("D: " + antworten[3]);
             out.println("Richtig: " + richtig);
-            out.println(); // Leere Zeile als Trenner
+            out.print("\n\n");
+
         } catch (IOException e) {
             JOptionPane.showMessageDialog(this, "Fehler beim Speichern.", "Fehler", JOptionPane.ERROR_MESSAGE);
             return;
         }
+
 
         JOptionPane.showMessageDialog(this, "Frage gespeichert!", "Erfolg", JOptionPane.INFORMATION_MESSAGE);
         frageField.setText("");

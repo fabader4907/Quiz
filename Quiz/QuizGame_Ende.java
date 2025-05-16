@@ -97,8 +97,6 @@ public class QuizGame_Ende extends Basis {
         if (aktuelleFrage >= fragenListe.size()) {
             JOptionPane.showMessageDialog(this, "Du hast es geschafft!", "Fertig", JOptionPane.INFORMATION_MESSAGE);
             new Leaderboard();
-            frageLabel.setVisible(false);
-            button.setVisible(false);
             return;
         }
 

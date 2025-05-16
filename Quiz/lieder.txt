@@ -10,63 +10,63 @@ A: Sorry
 B: Say It
 C: Apologize
 D: Too Late
-Richtige Antwort: A
+Richtig: A
 
 Frage: In welchem Song heißt es: „Hello from the other side“
 A: Other Side
 B: Call Me
 C: Hello
 D: Adele
-Richtige Antwort: C
+Richtig: C
 
 Frage: In welchem Song heißt es: „Cause baby you're a firework“
 A: Dynamite
 B: Boom
 C: Firework
 D: Explode
-Richtige Antwort: C
+Richtig: C
 
 Frage: In welchem Song heißt es: „I'm in love with the shape of you“
 A: Shape of You
 B: Perfect
 C: Photograph
 D: Thinking Out Loud
-Richtige Antwort: A
+Richtig: A
 
 Frage: In welchem Song heißt es: „I got a feeling that tonight's gonna be a good night“
 A: Good Night
 B: I Gotta Feeling
 C: Let's Go
 D: Party All Night
-Richtige Antwort: B
+Richtig: B
 
 Frage: In welchem Song heißt es: „We're up all night to get lucky“
 A: Get Lucky – Daft Punk ft. Pharrell
 B: Blurred Lines – Robin Thicke
 C: Wake Me Up – Avicii
 D: Feel So Close – Calvin Harris
-Richtige Antwort: A
+Richtig: A
 
 Frage: In welchem Song heißt es: „She said, 'Where'd you wanna go? How much you wanna risk?'“?
 A: Ride – Twenty One Pilots
 B: Something Just Like This – The Chainsmokers & Coldplay
 C: Paradise – Coldplay
 D: Radioactive – Imagine Dragons
-Richtige Antwort: B
+Richtige: B
 
 Frage: In welchem Song heißt es: „Doch du bist nicht mehr da, und ich fühl' mich allein, als wär's nie anders gewesen“?
 A: Lea – Leiser
 B: Wincent Weiss – Wer wenn nicht wir
 C: Lotte – Auf das, was da noch kommt
 D: SDP – Ich will nur dass du weißt
-Richtige Antwort: A
+Richtige: A
 
 Frage: In welchem Song heißt es: „Meine Freunde ham' studiert, ich hab Texte geschrieben in nem Keller mit Schimmel an der Wand“?
 A: Marteria – Kids
 B: Sido – Bilder im Kopf
 C: Kontra K – Erfolg ist kein Glück
 D: RAF Camora – Adriana
-Richtige Antwort: C
+Richtige: C
 
 Frage: In welchem Song heißt es: „Just a small town girl, living in a lonely world“?
 A: Don’t Stop Believin’
@@ -87,7 +87,7 @@ A: Kontra K – Erfolg ist kein Glück
 B: Samy Deluxe – Weck mich auf
 C: Sido – Mein Block
 D: Bushido – Alles wird gut
-Richtige Antwort: A: Kontra K – Erfolg ist kein Glück
+Richtig: A
 
 Frage: In welchem Song heißt es: „Ich heb' ab, nichts hält mich am Boden“?
 A: Auf uns – Andreas Bourani

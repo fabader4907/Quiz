@@ -35,27 +35,27 @@ public class QuizGame_Mitte extends Basis {
         // Set a dark background for the main frame
         getContentPane().setBackground(new Color(30, 30, 30));
 
-        // Titel
-        titelLabel = new JLabel("Jetzt wird es Interresanter. In welchem Song heißt es...", SwingConstants.CENTER);
-        titelLabel.setFont(new Font("Arial", Font.BOLD, 28));
-        titelLabel.setForeground(new Color(200, 200, 200)); // Light gray text
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.gridx = 0;
-        gbc.gridy = 1;
-        gbc.gridwidth = 2;
-        gbc.insets = new Insets(10, 10, 5, 10);
-        add(titelLabel, gbc);
-
         // Total Points Label
         pointsLabel = new JLabel("Punkte: " + totalPoints, SwingConstants.LEFT);
         pointsLabel.setFont(new Font("Arial", Font.BOLD, 16));
         pointsLabel.setForeground(new Color(255, 105, 180)); // Pink color for points
+        GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.gridwidth = 1;
         gbc.anchor = GridBagConstraints.WEST;
         gbc.insets = new Insets(10, 10, 0, 0);
         add(pointsLabel, gbc);
+
+        // Titel
+        titelLabel = new JLabel("Jetzt wird es Interresanter. In welchem Song heißt es...", SwingConstants.CENTER);
+        titelLabel.setFont(new Font("Arial", Font.BOLD, 28));
+        titelLabel.setForeground(new Color(200, 200, 200)); // Light gray text
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        gbc.gridwidth = 2;
+        gbc.insets = new Insets(10, 10, 5, 10);
+        add(titelLabel, gbc);
 
         // Countdown
         countdownLabel = new JLabel("" + countdownValue, SwingConstants.CENTER);
@@ -69,6 +69,7 @@ public class QuizGame_Mitte extends Basis {
 
         frageLabel.setVisible(false);
         frageLabel.setForeground(new Color(200, 200, 200)); // Light gray text for question
+        frageLabel.setFont(new Font("Arial", Font.BOLD, 20)); // Smaller font size for the question
         for (JButton button : antwortButtons) {
             button.setVisible(false);
             button.setBackground(new Color(70, 70, 70)); // Dark gray background for buttons
@@ -96,8 +97,6 @@ public class QuizGame_Mitte extends Basis {
         if (aktuelleFrage >= fragenListe.size()) {
             JOptionPane.showMessageDialog(this, "Jetzt sind wir dem Ende ganz nah!", "Weiter", JOptionPane.INFORMATION_MESSAGE);
             new QuizGame_Ende(totalPoints);
-            frageLabel.setVisible(false);
-            button.setVisible(false);
             return;
         }
 

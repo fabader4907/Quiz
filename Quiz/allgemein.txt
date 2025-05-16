@@ -66,7 +66,7 @@ A: Sido
 B: RAF Camora
 C: Kontra K
 D: Nimo
-Richtig: B (kommt aus Österreich)
+Richtig: B
 
 Frage: Welcher Song ist von Apache 207?
 A: 200 km/h
@@ -102,3 +102,4 @@ B: RAF Camora
 C: Loredana
 D: MoTrip
 Richtig: B
+
