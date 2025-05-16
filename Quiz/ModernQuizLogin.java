@@ -118,11 +118,17 @@ public class ModernQuizLogin extends JFrame {
         if (userMap.containsKey(user) && userMap.get(user).equals(pass)) {
             aktuellerBenutzer = user; // Speichern des angemeldeten Benutzers
             dispose();
-            starteQuizGame();
+
+            if (user.equalsIgnoreCase("Admin") && pass.equals("1")) {
+                new AdminThemenauswahl();
+            } else {
+                new Hauptmenu(aktuellerBenutzer);
+            }
         } else {
             msg.setText("Benutzername oder Passwort ist falsch!");
         }
     }
+
 
     /**
      * Platzhalter zum Start des Quiz-Spiels.
