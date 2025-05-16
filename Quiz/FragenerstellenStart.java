@@ -72,10 +72,25 @@ public class FragenerstellenStart extends JFrame {
         speichernBtn.setFont(new Font("Arial", Font.BOLD, 22));
         speichernBtn.setPreferredSize(new Dimension(300, 60));
         add(speichernBtn, gbc);
-
         speichernBtn.addActionListener(e -> frageSpeichern());
 
+// Zurück-Button
+        gbc.gridy++;
+        gbc.gridx = 1;
+        JButton zurueckBtn = new JButton("Zurück");
+        zurueckBtn.setBackground(new Color(220, 70, 70));
+        zurueckBtn.setForeground(Color.WHITE);
+        zurueckBtn.setFont(new Font("Arial", Font.BOLD, 22));
+        zurueckBtn.setPreferredSize(new Dimension(300, 60));
+        add(zurueckBtn, gbc);
+
+        zurueckBtn.addActionListener(e -> {
+            dispose(); // Fenster schließen
+            new AdminThemenauswahl(); // Zurück zum Admin-Menü
+        });
+
         setVisible(true);
+
     }
 
     private JLabel createLabel(String text) {
@@ -124,3 +139,4 @@ public class FragenerstellenStart extends JFrame {
         for (JTextField tf : antwortFields) tf.setText("");
     }
 }
+    
