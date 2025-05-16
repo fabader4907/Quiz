@@ -4,7 +4,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class QuizGame_Ende extends Basis {
 
@@ -22,7 +24,10 @@ public class QuizGame_Ende extends Basis {
         this.totalPoints = totalPoints;
 
         try {
-            fragenListe = FragenLader.ladeFragen("Quiz/fragen.txt");
+            fragenListe = FragenLader.ladeFragen("Quiz/lyrics.txt");
+            // Shuffle the list and pick 5 random questions
+            Collections.shuffle(fragenListe);
+            fragenListe = fragenListe.stream().limit(5).collect(Collectors.toList());
         } catch (IOException e) {
             JOptionPane.showMessageDialog(this, "Fehler beim Laden der Fragen: " + e.getMessage());
             return;
@@ -43,7 +48,7 @@ public class QuizGame_Ende extends Basis {
         add(titelLabel, gbc);
 
         // Total Points Label
-        pointsLabel = new JLabel("Punkte: 0", SwingConstants.LEFT);
+        pointsLabel = new JLabel("Punkte: " + totalPoints, SwingConstants.LEFT);
         pointsLabel.setFont(new Font("Arial", Font.BOLD, 16));
         pointsLabel.setForeground(new Color(255, 105, 180)); // Pink color for points
         gbc.gridx = 0;
@@ -92,6 +97,8 @@ public class QuizGame_Ende extends Basis {
         if (aktuelleFrage >= fragenListe.size()) {
             JOptionPane.showMessageDialog(this, "Du hast es geschafft!", "Fertig", JOptionPane.INFORMATION_MESSAGE);
             new Leaderboard();
+            frageLabel.setVisible(false);
+            button.setVisible(false);
             return;
         }
 
