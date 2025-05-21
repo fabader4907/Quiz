@@ -97,6 +97,7 @@ public class QuizGame_Mitte extends Basis {
         if (aktuelleFrage >= fragenListe.size()) {
             JOptionPane.showMessageDialog(this, "Jetzt sind wir dem Ende ganz nah!", "Weiter", JOptionPane.INFORMATION_MESSAGE);
             new QuizGame_Ende(totalPoints);
+            this.dispose();
             return;
         }
 

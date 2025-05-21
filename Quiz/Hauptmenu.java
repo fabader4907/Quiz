@@ -117,6 +117,11 @@ public class Hauptmenu extends JFrame {
 
         logoutBtn.addActionListener(e -> {
             dispose();
+            new Leaderboard();
+        });
+
+        logoutBtn.addActionListener(e -> {
+            dispose();
             new ModernQuizLogin();
         });
 

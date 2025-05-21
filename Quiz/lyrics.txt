@@ -25,7 +25,7 @@ A: Kalte Straßen
 B: Vorstadtstraßen
 C: dörfer
 D: Aminakoim
-Richtig: C
+Richtig: b
 
 Frage: Es is _____, als ob es gestern wär
 A: 2006
@@ -85,7 +85,7 @@ A: Morgen
 B: Tag
 C: Traum
 D: Stern
-Richtig: A
+Richtig: B
 
 Frage: 99 Luftballons
 auf ihrem Weg zum _______

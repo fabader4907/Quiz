@@ -18,6 +18,7 @@ public class QuizGame_Ende extends Basis {
     private JLabel titelLabel;
     private int totalPoints; // Variable to store total points
     private JLabel pointsLabel; // Label to display total points
+    private JTextArea frageTextArea; // New JTextArea for displaying the question
 
     public QuizGame_Ende(int totalPoints) {
         super("Lyric!", new String[]{"A", "B", "C", "D"});
@@ -42,7 +43,7 @@ public class QuizGame_Ende extends Basis {
         titelLabel.setForeground(new Color(200, 200, 200)); // Light gray text
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = 0;
-        gbc.gridy = 1;
+        gbc.gridy = 0;
         gbc.gridwidth = 2;
         gbc.insets = new Insets(10, 10, 5, 10);
         add(titelLabel, gbc);
@@ -52,7 +53,7 @@ public class QuizGame_Ende extends Basis {
         pointsLabel.setFont(new Font("Arial", Font.BOLD, 16));
         pointsLabel.setForeground(new Color(255, 105, 180)); // Pink color for points
         gbc.gridx = 0;
-        gbc.gridy = 0;
+        gbc.gridy = 1;
         gbc.gridwidth = 1;
         gbc.anchor = GridBagConstraints.WEST;
         gbc.insets = new Insets(10, 10, 0, 0);
@@ -68,14 +69,49 @@ public class QuizGame_Ende extends Basis {
         gbc.insets = new Insets(5, 10, 20, 10);
         add(countdownLabel, gbc);
 
+        // Initialize JTextArea for the question
+        frageTextArea = new JTextArea();
+        frageTextArea.setEditable(false);
+        frageTextArea.setAlignmentX(Component.CENTER_ALIGNMENT);
+        frageTextArea.setLineWrap(true);
+        frageTextArea.setWrapStyleWord(true);
+        frageTextArea.setOpaque(false); // Make the textarea transparent
+        frageTextArea.setForeground(new Color(200, 200, 200)); // Light gray text for question
+        frageTextArea.setFont(new Font("Arial", Font.PLAIN, 24)); // Increased font size
+        frageTextArea.setVisible(false);
+
+        // Add the textarea to the frame
+        GridBagConstraints gbcTextArea = new GridBagConstraints();
+        gbcTextArea.gridx = 0;
+        gbcTextArea.gridy = 3; // Adjust gridy as needed
+        gbcTextArea.gridwidth = GridBagConstraints.REMAINDER;
+        gbcTextArea.fill = GridBagConstraints.HORIZONTAL;
+        gbcTextArea.weightx = 1.0;
+        gbcTextArea.anchor = GridBagConstraints.NORTH; // Anchor to the top
+        gbcTextArea.insets = new Insets(5, 10, 20, 10);
+        add(frageTextArea, gbcTextArea);
+
+        // Hide the question label from the Basis class
         frageLabel.setVisible(false);
-        frageLabel.setForeground(new Color(200, 200, 200)); // Light gray text for question
+
         for (JButton button : antwortButtons) {
             button.setVisible(false);
             button.setBackground(new Color(70, 70, 70)); // Dark gray background for buttons
             button.setForeground(new Color(255, 255, 255)); // White text for buttons
             button.setFont(new Font("Arial", Font.BOLD, 24));
             button.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        }
+
+        // Adjust the constraints for the buttons to be placed below the JTextArea
+        for (int i = 0; i < antwortButtons.length; i++) {
+            GridBagConstraints buttonGbc = new GridBagConstraints();
+            buttonGbc.gridx = i % 2;
+            buttonGbc.gridy = 4 + (i / 2);
+            buttonGbc.gridwidth = 1;
+            buttonGbc.fill = GridBagConstraints.HORIZONTAL;
+            buttonGbc.weightx = 0.5;
+            buttonGbc.insets = new Insets(5, 10, 10, 10);
+            add(antwortButtons[i], buttonGbc);
         }
 
         countdownTimer = new Timer(1000, e -> {
@@ -97,15 +133,16 @@ public class QuizGame_Ende extends Basis {
         if (aktuelleFrage >= fragenListe.size()) {
             JOptionPane.showMessageDialog(this, "Du hast es geschafft!", "Fertig", JOptionPane.INFORMATION_MESSAGE);
             new Leaderboard();
+            this.dispose();
             return;
         }
 
         countdownLabel.setText("");
-        frageLabel.setVisible(true);
+        frageTextArea.setVisible(true);
         titelLabel.setVisible(false);
 
         Frage frage = fragenListe.get(aktuelleFrage);
-        frageLabel.setText(frage.frageText);
+        frageTextArea.setText(frage.frageText);
 
         for (int i = 0; i < antwortButtons.length; i++) {
             JButton button = antwortButtons[i];
