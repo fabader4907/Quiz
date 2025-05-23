@@ -41,43 +41,43 @@ public class ModernQuizLogin extends JFrame {
         gbc.fill = GridBagConstraints.HORIZONTAL;
 
         JLabel title = new JLabel("Willkommen beim Quiz", SwingConstants.CENTER);
-        title.setFont(new Font("Segoe UI", Font.BOLD, 36)); // Schriftgröße weiter erhöht
+        title.setFont(new Font("Segoe UI", Font.BOLD, 36));
         title.setForeground(new Color(33, 37, 41));
 
         usernameField = new JTextField();
         usernameField.setBackground(fieldColor);
-        usernameField.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15)); // Padding erhöht
-        usernameField.setPreferredSize(new Dimension(300, 50)); // Größe des Eingabefelds erhöht
+        usernameField.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
+        usernameField.setPreferredSize(new Dimension(300, 50));
 
         passwordField = new JPasswordField();
         passwordField.setBackground(fieldColor);
-        passwordField.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15)); // Padding erhöht
-        passwordField.setPreferredSize(new Dimension(300, 50)); // Größe des Eingabefelds erhöht
+        passwordField.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
+        passwordField.setPreferredSize(new Dimension(300, 50));
         passwordField.setEchoChar('•');
 
         JCheckBox showPassword = new JCheckBox("Passwort anzeigen");
         showPassword.setBackground(bgColor);
-        showPassword.setFont(new Font("Segoe UI", Font.PLAIN, 18)); // Schriftgröße erhöht
+        showPassword.setFont(new Font("Segoe UI", Font.PLAIN, 18));
         showPassword.addActionListener(e -> {
             passwordField.setEchoChar(showPassword.isSelected() ? (char) 0 : '•');
         });
 
         msg = new JLabel("", SwingConstants.CENTER);
         msg.setForeground(Color.RED);
-        msg.setFont(new Font("Segoe UI", Font.PLAIN, 18)); // Schriftgröße erhöht
+        msg.setFont(new Font("Segoe UI", Font.PLAIN, 18));
 
         JButton loginButton = new JButton("Anmelden");
         loginButton.setBackground(buttonColor);
         loginButton.setForeground(Color.WHITE);
-        loginButton.setFont(new Font("Segoe UI", Font.BOLD, 20)); // Schriftgröße erhöht
+        loginButton.setFont(new Font("Segoe UI", Font.BOLD, 20));
         loginButton.setFocusPainted(false);
-        loginButton.setPreferredSize(new Dimension(200, 60)); // Größe des Buttons erhöht
+        loginButton.setPreferredSize(new Dimension(200, 60));
 
         JButton registerButton = new JButton("Registrieren");
         registerButton.setBackground(new Color(100, 180, 100));
         registerButton.setForeground(Color.WHITE);
-        registerButton.setFont(new Font("Segoe UI", Font.BOLD, 18)); // Schriftgröße erhöht
-        registerButton.setPreferredSize(new Dimension(200, 60)); // Größe des Buttons erhöht
+        registerButton.setFont(new Font("Segoe UI", Font.BOLD, 18));
+        registerButton.setPreferredSize(new Dimension(200, 60));
 
         gbc.gridx = 0;
         gbc.gridy = 0;
@@ -107,56 +107,46 @@ public class ModernQuizLogin extends JFrame {
         setVisible(true);
     }
 
-    /**
-     * Verarbeitet die Anmeldung des Benutzers.
-     * Bei Erfolg wird das Quiz gestartet.
-     */
     private void handleLogin() {
         String user = usernameField.getText();
         String pass = new String(passwordField.getPassword());
 
         if (userMap.containsKey(user) && userMap.get(user).equals(pass)) {
-            aktuellerBenutzer = user; // Speichern des angemeldeten Benutzers
+            aktuellerBenutzer = user;
             dispose();
 
             if (user.equalsIgnoreCase("Admin") && pass.equals("1")) {
                 new AdminThemenauswahl();
             } else {
-                new Hauptmenu(aktuellerBenutzer);
+                String avatarPfad = AvatarAuswahl.loadAvatarForUser(aktuellerBenutzer);
+                new Hauptmenu(aktuellerBenutzer, avatarPfad);
             }
         } else {
             msg.setText("Benutzername oder Passwort ist falsch!");
         }
     }
 
-
-    /**
-     * Platzhalter zum Start des Quiz-Spiels.
-     * Speichert am Ende einen Beispiel-Score.
-     */
     private void starteQuizGame() {
-        new Hauptmenu(aktuellerBenutzer);  // NEU: Statt direkt Spiel
+        String avatarPfad = AvatarAuswahl.loadAvatarForUser(aktuellerBenutzer);
+        new Hauptmenu(aktuellerBenutzer, avatarPfad);
     }
 
-    /**
-     * Öffnet ein Fenster zur Benutzerregistrierung.
-     */
     private void openRegisterWindow() {
         JDialog registerDialog = new JDialog(this, "Benutzer registrieren", true);
-        registerDialog.setSize(500, 300); // Dialoggröße erhöht
+        registerDialog.setSize(500, 300);
         registerDialog.setLocationRelativeTo(this);
-        registerDialog.setLayout(new GridLayout(4, 2, 15, 15)); // Abstände erhöht
+        registerDialog.setLayout(new GridLayout(4, 2, 15, 15));
 
         JTextField newUserField = new JTextField();
-        newUserField.setPreferredSize(new Dimension(250, 40)); // Größe des Eingabefelds erhöht
+        newUserField.setPreferredSize(new Dimension(250, 40));
         JPasswordField newPassField = new JPasswordField();
-        newPassField.setPreferredSize(new Dimension(250, 40)); // Größe des Eingabefelds erhöht
+        newPassField.setPreferredSize(new Dimension(250, 40));
         JLabel info = new JLabel("");
-        info.setFont(new Font("Segoe UI", Font.PLAIN, 16)); // Schriftgröße erhöht
+        info.setFont(new Font("Segoe UI", Font.PLAIN, 16));
 
         JButton saveButton = new JButton("Speichern");
-        saveButton.setFont(new Font("Segoe UI", Font.BOLD, 16)); // Schriftgröße erhöht
-        saveButton.setPreferredSize(new Dimension(150, 50)); // Größe des Buttons erhöht
+        saveButton.setFont(new Font("Segoe UI", Font.BOLD, 16));
+        saveButton.setPreferredSize(new Dimension(150, 50));
 
         registerDialog.add(new JLabel("Benutzername:"));
         registerDialog.add(newUserField);
@@ -188,9 +178,6 @@ public class ModernQuizLogin extends JFrame {
         registerDialog.setVisible(true);
     }
 
-    /**
-     * Speichert alle registrierten Benutzer in users.txt.
-     */
     private void saveUsers() {
         try (PrintWriter writer = new PrintWriter(new FileWriter("Quiz/users.txt"))) {
             for (Map.Entry<String, String> entry : userMap.entrySet()) {
@@ -201,9 +188,6 @@ public class ModernQuizLogin extends JFrame {
         }
     }
 
-    /**
-     * Lädt Benutzerdaten aus users.txt.
-     */
     private void loadUsers() {
         File file = new File("Quiz/users.txt");
         if (!file.exists()) return;
@@ -221,24 +205,11 @@ public class ModernQuizLogin extends JFrame {
         }
     }
 
-    /**
-     * Speichert Name und Punktzahl in scores.txt.
-     *
-     * @param name   Spielername
-     * @param punkte Punktzahl
-     */
     private void speichereScore(String name, int punkte) {
         try (PrintWriter writer = new PrintWriter(new FileWriter("Quiz/scores.txt", true))) {
             writer.println(name + ":" + punkte);
         } catch (IOException e) {
             System.out.println("Fehler beim Speichern der Punktzahl.");
         }
-    }
-
-    /**
-     * Hauptmethode zum Starten der App.
-     */
-    public static void main(String[] args) {
-        new ModernQuizLogin();
     }
 }

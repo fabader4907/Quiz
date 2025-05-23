@@ -103,3 +103,53 @@ C: Loredana
 D: MoTrip
 Richtig: B
 
+Frage: Welcher Queen-Song beginnt mit den Worten: „Is this the real life? Is this just fantasy?“
+A: We Are the Champions
+B: Radio Ga Ga
+C: Bohemian Rhapsody
+D: Don’t Stop Me Now
+Richtig: C
+
+Frage: In welchem Jahr wurde der Song „Blinding Lights“ von The Weeknd veröffentlicht?
+A: 2018
+B: 2019
+C: 2020
+D: 2021
+Richtig: B
+
+Frage: Welcher Künstler hat NICHT mit Capital Bra zusammengearbeitet?
+A: Bushido
+B: Juju
+C: Samra
+D: Luciano
+Richtig: A
+
+Frage: Was war Mark Forsters Markenzeichen in seinen frühen Jahren?
+A: Basecap
+B: Augenklappe
+C: Schal
+D: Sonnenbrille
+Richtig: A
+
+Frage: Wer war ursprünglich Mitglied der Band „Tokio Hotel“?
+A: Tim Bendzko
+B: Bill Kaulitz
+C: Wincent Weiss
+D: Clueso
+Richtig: B
+
+Frage: Wie lautet der bürgerliche Name von Sido?
+A: Paul Hartmut Würdig
+B: Patrick Groß
+C: Samy Sorge
+D: Carlo Wagenschieber
+Richtig: A
+
+Frage: Wer performte „Amadeus“ und war ein Austropop-Export nach den USA?
+A: Georg Danzer
+B: Falco
+C: Wolfgang Ambros
+D: Rainhard Fendrich
+Richtig: B
+
+

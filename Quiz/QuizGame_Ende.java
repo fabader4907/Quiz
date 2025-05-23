@@ -3,7 +3,7 @@ package Quiz;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
-import java.io.IOException;
+import java.io.*;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -16,17 +16,25 @@ public class QuizGame_Ende extends Basis {
     private Timer countdownTimer;
     private int countdownValue = 5;
     private JLabel titelLabel;
-    private int totalPoints; // Variable to store total points
-    private JLabel pointsLabel; // Label to display total points
-    private JTextArea frageTextArea; // New JTextArea for displaying the question
+    private int totalPoints;
+    private JLabel pointsLabel;
+    private JTextArea frageTextArea;
+    private String benutzername;
 
-    public QuizGame_Ende(int totalPoints) {
+    public QuizGame_Ende(String benutzername, int totalPoints) {
         super("Lyric!", new String[]{"A", "B", "C", "D"});
+        this.benutzername = benutzername;
         this.totalPoints = totalPoints;
+
+        // Modernes Dialog-Design
+        UIManager.put("OptionPane.messageFont", new Font("Segoe UI", Font.PLAIN, 16));
+        UIManager.put("OptionPane.buttonFont", new Font("Segoe UI", Font.BOLD, 14));
+        UIManager.put("OptionPane.background", new Color(40, 40, 40));
+        UIManager.put("Panel.background", new Color(40, 40, 40));
+        UIManager.put("OptionPane.messageForeground", Color.WHITE);
 
         try {
             fragenListe = FragenLader.ladeFragen("Quiz/lyrics.txt");
-            // Shuffle the list and pick 5 random questions
             Collections.shuffle(fragenListe);
             fragenListe = fragenListe.stream().limit(5).collect(Collectors.toList());
         } catch (IOException e) {
@@ -34,24 +42,24 @@ public class QuizGame_Ende extends Basis {
             return;
         }
 
-        // Set a dark background for the main frame
         getContentPane().setBackground(new Color(30, 30, 30));
 
-        // Titel
-        titelLabel = new JLabel("Beweise dein können! Vervollständige die Lyrics", SwingConstants.CENTER);
-        titelLabel.setFont(new Font("Arial", Font.BOLD, 28));
-        titelLabel.setForeground(new Color(200, 200, 200)); // Light gray text
         GridBagConstraints gbc = new GridBagConstraints();
+
+        // Titel
+        titelLabel = new JLabel("Beweise dein Können! Vervollständige die Lyrics", SwingConstants.CENTER);
+        titelLabel.setFont(new Font("Arial", Font.BOLD, 28));
+        titelLabel.setForeground(new Color(200, 200, 200));
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.gridwidth = 2;
         gbc.insets = new Insets(10, 10, 5, 10);
         add(titelLabel, gbc);
 
-        // Total Points Label
+        // Punkte
         pointsLabel = new JLabel("Punkte: " + totalPoints, SwingConstants.LEFT);
         pointsLabel.setFont(new Font("Arial", Font.BOLD, 16));
-        pointsLabel.setForeground(new Color(255, 105, 180)); // Pink color for points
+        pointsLabel.setForeground(new Color(255, 105, 180));
         gbc.gridx = 0;
         gbc.gridy = 1;
         gbc.gridwidth = 1;
@@ -59,50 +67,76 @@ public class QuizGame_Ende extends Basis {
         gbc.insets = new Insets(10, 10, 0, 0);
         add(pointsLabel, gbc);
 
+        // Button "Quiz abbrechen"
+        JButton btnAbbrechen = new JButton("Quiz abbrechen");
+        btnAbbrechen.setBackground(new Color(200, 0, 0));
+        btnAbbrechen.setForeground(Color.WHITE);
+        btnAbbrechen.setFont(new Font("Arial", Font.BOLD, 12));
+        btnAbbrechen.setFocusPainted(false);
+        btnAbbrechen.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
+        btnAbbrechen.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+
+        btnAbbrechen.addActionListener(e -> {
+            int option = JOptionPane.showConfirmDialog(
+                    this,
+                    "Die Punkte werden nicht gespeichert.\nWillst du das Quiz wirklich abbrechen?",
+                    "Abbrechen bestätigen",
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.WARNING_MESSAGE
+            );
+            if (option == JOptionPane.YES_OPTION) {
+                new Hauptmenu(benutzername);
+                this.dispose();
+            }
+        });
+
+        GridBagConstraints gbcAbbruch = new GridBagConstraints();
+        gbcAbbruch.gridx = 1;
+        gbcAbbruch.gridy = 1;
+        gbcAbbruch.anchor = GridBagConstraints.NORTHEAST;
+        gbcAbbruch.insets = new Insets(10, 0, 0, 10);
+        add(btnAbbrechen, gbcAbbruch);
+
         // Countdown
         countdownLabel = new JLabel("" + countdownValue, SwingConstants.CENTER);
         countdownLabel.setFont(new Font("Arial", Font.BOLD, 60));
-        countdownLabel.setForeground(new Color(173, 216, 230)); // Light blue color
+        countdownLabel.setForeground(new Color(173, 216, 230));
         gbc.gridy = 2;
         gbc.gridwidth = 2;
         gbc.anchor = GridBagConstraints.CENTER;
         gbc.insets = new Insets(5, 10, 20, 10);
         add(countdownLabel, gbc);
 
-        // Initialize JTextArea for the question
+        // Frage-Textbereich
         frageTextArea = new JTextArea();
         frageTextArea.setEditable(false);
-        frageTextArea.setAlignmentX(Component.CENTER_ALIGNMENT);
         frageTextArea.setLineWrap(true);
         frageTextArea.setWrapStyleWord(true);
-        frageTextArea.setOpaque(false); // Make the textarea transparent
-        frageTextArea.setForeground(new Color(200, 200, 200)); // Light gray text for question
-        frageTextArea.setFont(new Font("Arial", Font.PLAIN, 24)); // Increased font size
+        frageTextArea.setOpaque(false);
+        frageTextArea.setForeground(new Color(200, 200, 200));
+        frageTextArea.setFont(new Font("Arial", Font.PLAIN, 24));
         frageTextArea.setVisible(false);
 
-        // Add the textarea to the frame
         GridBagConstraints gbcTextArea = new GridBagConstraints();
         gbcTextArea.gridx = 0;
-        gbcTextArea.gridy = 3; // Adjust gridy as needed
+        gbcTextArea.gridy = 3;
         gbcTextArea.gridwidth = GridBagConstraints.REMAINDER;
         gbcTextArea.fill = GridBagConstraints.HORIZONTAL;
         gbcTextArea.weightx = 1.0;
-        gbcTextArea.anchor = GridBagConstraints.NORTH; // Anchor to the top
+        gbcTextArea.anchor = GridBagConstraints.NORTH;
         gbcTextArea.insets = new Insets(5, 10, 20, 10);
         add(frageTextArea, gbcTextArea);
 
-        // Hide the question label from the Basis class
         frageLabel.setVisible(false);
 
         for (JButton button : antwortButtons) {
             button.setVisible(false);
-            button.setBackground(new Color(70, 70, 70)); // Dark gray background for buttons
-            button.setForeground(new Color(255, 255, 255)); // White text for buttons
+            button.setBackground(new Color(70, 70, 70));
+            button.setForeground(Color.WHITE);
             button.setFont(new Font("Arial", Font.BOLD, 24));
             button.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         }
 
-        // Adjust the constraints for the buttons to be placed below the JTextArea
         for (int i = 0; i < antwortButtons.length; i++) {
             GridBagConstraints buttonGbc = new GridBagConstraints();
             buttonGbc.gridx = i % 2;
@@ -122,7 +156,6 @@ public class QuizGame_Ende extends Basis {
                 countdownLabel.setText("Los!");
                 countdownTimer.stop();
                 zeigeAntworten();
-                new Timer(1000, e1 -> {});
             }
         });
         countdownTimer.setInitialDelay(1000);
@@ -131,8 +164,9 @@ public class QuizGame_Ende extends Basis {
 
     private void zeigeAntworten() {
         if (aktuelleFrage >= fragenListe.size()) {
+            speicherePunkte();
             JOptionPane.showMessageDialog(this, "Du hast es geschafft!", "Fertig", JOptionPane.INFORMATION_MESSAGE);
-            new Leaderboard();
+            new Leaderboard(benutzername);
             this.dispose();
             return;
         }
@@ -178,8 +212,8 @@ public class QuizGame_Ende extends Basis {
                 if (istRichtig) {
                     currentButton.setBorder(BorderFactory.createLineBorder(Color.GREEN, 10));
                     points = ph.getPoints();
-                    totalPoints += points; // Increment total points
-                    pointsLabel.setText("Punkte: " + totalPoints); // Update points label
+                    totalPoints += points;
+                    pointsLabel.setText("Punkte: " + totalPoints);
                 } else {
                     points = 0;
                     currentButton.setBorder(BorderFactory.createLineBorder(Color.RED, 10));
@@ -195,9 +229,7 @@ public class QuizGame_Ende extends Basis {
                     }
                 }
 
-                // Add a delay before showing the points dialog
                 Timer delayTimer = new Timer(3000, ev -> {
-                    // Punkte zeigen und nächste Frage
                     JOptionPane.showMessageDialog(
                             QuizGame_Ende.this,
                             "Du hast " + points + " Punkte erreicht!",
@@ -206,15 +238,24 @@ public class QuizGame_Ende extends Basis {
                     );
 
                     aktuelleFrage++;
-                    for (int btnNr = 0; btnNr < antwortButtons.length; btnNr++) {
-                        antwortButtons[btnNr].setEnabled(true);
-                        antwortButtons[btnNr].setBorder(null);
+                    for (JButton b : antwortButtons) {
+                        b.setEnabled(true);
+                        b.setBorder(null);
                     }
                     zeigeAntworten();
                 });
-                delayTimer.setRepeats(false); // Ensure the timer only fires once
+                delayTimer.setRepeats(false);
                 delayTimer.start();
             });
+        }
+    }
+
+    private void speicherePunkte() {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("scores.txt", true))) {
+            writer.write(benutzername + ":" + totalPoints);
+            writer.newLine();
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(this, "Fehler beim Speichern der Punkte: " + e.getMessage());
         }
     }
 }

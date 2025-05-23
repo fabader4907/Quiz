@@ -49,8 +49,27 @@ public class AdminThemenauswahl extends JFrame {
         buttonGroupPanel.add(addPanel);
         buttonGroupPanel.add(deletePanel);
 
+        // Abmelden-Button hinzufügen
+        JButton logoutButton = new JButton("Abmelden");
+        logoutButton.setFont(new Font("Arial", Font.BOLD, 20));
+        logoutButton.setBackground(new Color(200, 80, 80));
+        logoutButton.setForeground(Color.WHITE);
+        logoutButton.setFocusPainted(false);
+        logoutButton.setPreferredSize(new Dimension(200, 50));
+        logoutButton.addActionListener((ActionEvent e) -> {
+            dispose();
+            new ModernQuizLogin();
+        });
+
+        JPanel logoutPanel = new JPanel();
+        logoutPanel.setOpaque(false);
+        logoutPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 40, 20));
+        logoutPanel.add(logoutButton);
+
         mainPanel.add(titleLabel, BorderLayout.NORTH);
         mainPanel.add(buttonGroupPanel, BorderLayout.CENTER);
+        mainPanel.add(logoutPanel, BorderLayout.SOUTH);
+
         add(mainPanel);
         setVisible(true);
     }
@@ -81,7 +100,7 @@ public class AdminThemenauswahl extends JFrame {
                 if (istHinzufuegen) {
                     new FragenerstellenStart(dateien[index]);
                 } else {
-                    new FragenLoeschenStart(dateien[index]); // Diese Klasse baust du noch
+                    new FragenLoeschenStart(dateien[index]); // Diese Klasse musst du noch erstellen
                 }
             });
             panel.add(btn, gbc);

@@ -2,8 +2,8 @@ package Quiz;
 
 public class Main {
     public static void main(String[] args) {
-        //new ModernQuizLogin();
+        new ModernQuizLogin();
         //new Leaderboard();
-        new QuizGame_Ende(0);
+        //new QuizGame_Ende(0);
     }
 }

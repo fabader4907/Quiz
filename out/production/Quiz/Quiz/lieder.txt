@@ -90,7 +90,7 @@ D: Bushido – Alles wird gut
 Richtig: A
 
 Frage: In welchem Song heißt es: „Ich heb' ab, nichts hält mich am Boden“?
-A: Auf uns – Andreas Bourani
+A: Astronaut – Sido
 B: Hoch – Tim Bendzko
 C: Chöre – Mark Forster
 D: Achterbahn – Helene Fischer
@@ -109,3 +109,46 @@ B: Was für eine geile Zeit – Ben Zucker & DJ Ötzi
 C: Achterbahn – Helene Fischer
 D: Herz über Kopf – Joris
 Richtig: A
+
+Frage: In welchem Song heißt es: „I was doing just fine before I met you, I drink too much and that's an issue“?
+A: Closer – The Chainsmokers ft. Halsey
+B: Stay – Zedd & Alessia Cara
+C: Roses – The Chainsmokers
+D: Stitches – Shawn Mendes
+Richtig: A
+
+Frage: In welchem Song heißt es: „Ich will dass du weißt, ich hab' dich immer noch lieb, auch wenn ich nicht mehr bei dir bin“?
+A: Peter Fox – Haus am See
+B: SDP – Ich will nur dass du weißt
+C: Cro – Einmal um die Welt
+D: Clueso – Gewinner
+Richtig: B
+
+Frage: In welchem Song heißt es: „Und irgendwann bleib ich dann dort, geh nicht mehr weg von hier“?
+A: Reinhard Fendrich – Macho Macho
+B: Rainhard Fendrich – I am from Austria
+C: STS – Fürstenfeld
+D: Wolfgang Ambros – Schifoan
+Richtig: C
+
+Frage: In welchem Song heißt es: „I steh auf kaner seiner Listn, oba i woaß, i bin a echter Österreicher“?
+A: Wolfgang Ambros – Es lebe der Zentralfriedhof
+B: Reinhard Fendrich – I am from Austria
+C: Rainhard Fendrich – Macho Macho
+D: STS – Großvater
+Richtig: B
+
+Frage: In welchem Song heißt es: „Geh, wennst gehst, dann geh, aber geh net so“?
+A: Rainhard Fendrich – Weus’d a Herz hast wia a Bergwerk
+B: STS – Irgendwann bleib i dann dort
+C: Peter Cornelius – Du entschuldige i kenn di
+D: Georg Danzer – Hupf in Gatsch
+Richtig: A
+
+Frage: In welchem Song heißt es: „Und wenn ich geh', dann so wie ich gekommen bin“?
+A: Komet – Udo Lindenberg & Apache 207
+B: Astronaut – Sido & Andreas Bourani
+C: Roller – Apache 207
+D: Ohne mein Team – RAF Camora
+Richtig: A
+

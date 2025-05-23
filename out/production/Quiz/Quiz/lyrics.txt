@@ -1,33 +1,41 @@
 Frage: Und ich flieg', flieg', flieg' wie ein Flieger
-Bin so stark, stark, stark wie ein _______
+Bin so stark, stark, stark wie ein _______.
 A: Panzer
 B: Tiger
 C: Löwe
 D: Adler
-Richtige Antwort: B
+Richtig: B
 
 Frage: Fahr nach ________ für 'ne Woche, mach mein'n Audi da kaputt 
 Rauche Jontas neben Prada, kauf für tausend Euro Schmuck 
 Doch ich bin nicht wie die andern da, ich bin halt aus 6-1 
-Und wir spinn'n und dreh'n die Sachen, rauchen Jontas, steh'n im Kreis 
+Und wir spinn'n und dreh'n die Sachen, rauchen Jontas, steh'n im Kreis.
 A: Milona
 B: Milono
 C: Milano
 D: Malino
-Richtig:C
+Richtig: C
 
 Frage: Es war schon dunkel 
 Als ich durch ______ heimwärts ging 
 Da war ein Wirtshaus 
 Aus dem das Licht noch auf den Gehsteig schien 
-Ich hatte Zeit und mir war kalt, drum trat ich ein
+Ich hatte Zeit und mir war kalt, drum trat ich ein.
 A: Kalte Straßen
 B: Vorstadtstraßen
 C: dörfer
 D: Aminakoim
+Richtig: B
+
+Frage: I wanna be a billionaire so fucking bad
+Buy all of the ____ I never had
+A: cars
+B: dogs
+C: things
+D: clothes
 Richtig: C
 
-Frage: Es is _____, als ob es gestern wär
+Frage: Es is _____, als ob es gestern wär.
 A: 2006
 B: 2004
 C: 2001
@@ -36,7 +44,7 @@ Richtig: D
 
 Frage: „Digga, ich zock' Fortnite“ 
 Stream live jetzt, mache nochmal Mic-check 
-Ich grüße AviveHD, __________und iCrimax 
+Ich grüße AviveHD, __________und iCrimax.
 A: Steel
 B: Monte
 C: MrGamerPros
@@ -46,15 +54,14 @@ Richtig: C
 Frage:Takmış koluna elin ______ 
 Beni orta yerimden çatlatıyor 
 Ağzında sakızı şişirip şişirip 
-Arsız arsız patlatıyor 
+Arsız arsız patlatıyor.
 A: Amena
 B: Adamini
 C: Moruk
 D: askim
 Richtig: B
 
-Frage: Von der _____ Major Tom 
-Völlig losgelöst von der ______ 
+Frage: Völlig losgelöst von der ______.
 A: Welt
 B: Erde
 C: Schule
@@ -72,7 +79,7 @@ D:Tiroler
 Richtig: B
 
 Frage: Ich war noch niemals in New York,
-ich war noch niemals auf _______
+ich war noch niemals auf _______.
 A: Hawaii
 B: Mallorca
 C: Boulevard
@@ -80,15 +87,15 @@ D: einer richtigen Reise
 Richtig: D
 
 Frage: Atemlos durch die Nacht,
-bis ein neuer ______ erwacht
+bis ein neuer ______ erwacht.
 A: Morgen
 B: Tag
 C: Traum
 D: Stern
-Richtig: A
+Richtig: B
 
 Frage: 99 Luftballons
-auf ihrem Weg zum _______
+auf ihrem Weg zum _______.
 A: Horizont
 B: Himmel
 C: Feld
@@ -96,7 +103,7 @@ D: Sonnenlicht
 Richtig: A
 
 Frage: An Tagen wie diesen
-wünscht man sich _______
+wünscht man sich _______.
 A: Unendlichkeit
 B: Freiheit
 C: Liebe
@@ -104,7 +111,7 @@ D: Sonnenschein
 Richtig: A
 
 Frage: Ich heb ab,
-nichts hält mich am ______
+nichts hält mich am ______.
 A: Dach
 B: Boden
 C: Leben
@@ -112,7 +119,7 @@ D: Herzen
 Richtig: B
 
 Frage: Ich wär’ so gerne Millionär,
-dann wär mein Konto niemals ______
+dann wär mein Konto niemals ______.
 A: leer
 B: gesperrt
 C: traurig
@@ -120,9 +127,38 @@ D: rot
 Richtig: A
 
 Frage: Skandal im Sperrbezirk –
-und Rosi hat ein ______
+und Rosi hat ein ______.
 A: Geheimnis
 B: Zimmer
 C: Telefon
 D: Kleid
+Richtig: C
+
+Frage: Gib's mir doggy, gib's mir doggy,
+gib's mir ______.
+A: Grubi
+B: Alpi
+C: Doggy
+D: Bader
+Richtig: C
+
+Frage: Mein kleiner grüner Kaktus steht draußen am ______.
+A: Weg
+B: Fenster
+C: Balkon
+D: Garten
+Richtig: B
+
+Frage: Marmor, Stein und Eisen bricht, aber unsere Liebe _______.
+A: nicht
+B: auch
+C: bald
+D: selten
+Richtig: A
+
+Frage: Ich weiß, du willst _____, Babe, ey
+A: Pommes
+B: Samu
+C: Das darf ich in der Schule nicht sagen
+D: Schokolade
 Richtig: C

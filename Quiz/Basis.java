@@ -6,11 +6,8 @@ import javax.sound.sampled.*;
 
 public class Basis extends JFrame {
     protected JLabel frageLabel;
-    protected JLabel bildLabel;
     protected JButton[] antwortButtons;
     protected ButtonGroup antwortGruppe;
-    protected JButton button;
-    protected Clip soundClip;
 
     public Basis(String frage, String[] antworten/*, String bildPfad, String soundPfad*/) {
         // Fenster-Einstellungen
@@ -32,15 +29,6 @@ public class Basis extends JFrame {
         gbc.weighty = 0.1;
         add(frageLabel, gbc);
 
-        /* Bild hinzufügen (optional)
-        if (bildPfad != null && !bildPfad.isEmpty()) {
-            ImageIcon icon = new ImageIcon(bildPfad);
-            bildLabel = new JLabel(icon);
-            gbc.gridy = 1;
-            gbc.gridwidth = 2;
-            add(bildLabel, gbc);
-        }*/
-
         // Antwortmöglichkeiten mit Buttons (2 Spalten)
         antwortGruppe = new ButtonGroup();
         antwortButtons = new JButton[antworten.length];
@@ -59,26 +47,6 @@ public class Basis extends JFrame {
             add(antwortButtons[i], gbc);
         }
 
-        /* Sound abspielen (optional)
-        if (soundPfad != null && !soundPfad.isEmpty()) {
-            playSound(soundPfad);
-        }
-        */
-
         setVisible(true);
     }
-
-    /*Funktion zum Abspielen eines Sounds
-    private void playSound(String soundPfad) {
-        try {
-            File soundFile = new File(soundPfad);
-            AudioInputStream audioIn = AudioSystem.getAudioInputStream(soundFile);
-            soundClip = AudioSystem.getClip();
-            soundClip.open(audioIn);
-            soundClip.start();
-        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
-            System.err.println("Sound konnte nicht abgespielt werden: " + e.getMessage());
-        }
-    }
-    */
 }

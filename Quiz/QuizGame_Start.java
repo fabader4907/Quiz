@@ -10,21 +10,29 @@ import java.util.stream.Collectors;
 
 public class QuizGame_Start extends Basis {
 
+    private String benutzername;
     private List<Frage> fragenListe;
     private int aktuelleFrage = 0;
     private JLabel countdownLabel;
     private Timer countdownTimer;
     private int countdownValue = 5;
     private JLabel titelLabel;
-    private int totalPoints = 0; // Variable to store total points
-    private JLabel pointsLabel; // Label to display total points
+    private int totalPoints = 0;
+    private JLabel pointsLabel;
 
-    public QuizGame_Start() {
+    public QuizGame_Start(String benutzername, int i) {
         super("Lyric!", new String[]{"A", "B", "C", "D"});
+        this.benutzername = benutzername;
+
+        // Modernes Dialog-Design
+        UIManager.put("OptionPane.messageFont", new Font("Segoe UI", Font.PLAIN, 16));
+        UIManager.put("OptionPane.buttonFont", new Font("Segoe UI", Font.BOLD, 14));
+        UIManager.put("OptionPane.background", new Color(40, 40, 40));
+        UIManager.put("Panel.background", new Color(40, 40, 40));
+        UIManager.put("OptionPane.messageForeground", Color.WHITE);
 
         try {
             fragenListe = FragenLader.ladeFragen("Quiz/allgemein.txt");
-            // Shuffle the list and pick 10 random questions
             Collections.shuffle(fragenListe);
             fragenListe = fragenListe.stream().limit(10).collect(Collectors.toList());
         } catch (IOException e) {
@@ -32,13 +40,11 @@ public class QuizGame_Start extends Basis {
             return;
         }
 
-        // Set a dark background for the main frame
         getContentPane().setBackground(new Color(30, 30, 30));
 
-        // Titel
         titelLabel = new JLabel("Zeige dein Musikwissen", SwingConstants.CENTER);
         titelLabel.setFont(new Font("Arial", Font.BOLD, 28));
-        titelLabel.setForeground(new Color(200, 200, 200)); // Light gray text
+        titelLabel.setForeground(new Color(200, 200, 200));
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 1;
@@ -46,10 +52,9 @@ public class QuizGame_Start extends Basis {
         gbc.insets = new Insets(10, 10, 5, 10);
         add(titelLabel, gbc);
 
-        // Total Points Label
         pointsLabel = new JLabel("Punkte: " + totalPoints, SwingConstants.LEFT);
         pointsLabel.setFont(new Font("Arial", Font.BOLD, 16));
-        pointsLabel.setForeground(new Color(255, 105, 180)); // Pink color for points
+        pointsLabel.setForeground(new Color(255, 105, 180));
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.gridwidth = 1;
@@ -57,10 +62,38 @@ public class QuizGame_Start extends Basis {
         gbc.insets = new Insets(10, 10, 0, 0);
         add(pointsLabel, gbc);
 
-        // Countdown
+        // Button "Quiz abbrechen"
+        JButton btnAbbrechen = new JButton("Quiz abbrechen");
+        btnAbbrechen.setBackground(new Color(200, 0, 0));
+        btnAbbrechen.setForeground(Color.WHITE);
+        btnAbbrechen.setFont(new Font("Arial", Font.BOLD, 12));
+        btnAbbrechen.setFocusPainted(false);
+        btnAbbrechen.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
+
+        btnAbbrechen.addActionListener(e -> {
+            int option = JOptionPane.showConfirmDialog(
+                    this,
+                    "Die Punkte werden nicht gespeichert.\nWillst du das Quiz wirklich abbrechen?",
+                    "Abbrechen bestätigen",
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.WARNING_MESSAGE
+            );
+            if (option == JOptionPane.YES_OPTION) {
+                new Hauptmenu(benutzername);
+                this.dispose();
+            }
+        });
+
+        GridBagConstraints gbcAbbruch = new GridBagConstraints();
+        gbcAbbruch.gridx = 1;
+        gbcAbbruch.gridy = 0;
+        gbcAbbruch.anchor = GridBagConstraints.NORTHEAST;
+        gbcAbbruch.insets = new Insets(10, 0, 0, 10);
+        add(btnAbbrechen, gbcAbbruch);
+
         countdownLabel = new JLabel("" + countdownValue, SwingConstants.CENTER);
         countdownLabel.setFont(new Font("Arial", Font.BOLD, 60));
-        countdownLabel.setForeground(new Color(173, 216, 230)); // Light blue color
+        countdownLabel.setForeground(new Color(173, 216, 230));
         gbc.gridy = 2;
         gbc.gridwidth = 2;
         gbc.anchor = GridBagConstraints.CENTER;
@@ -68,11 +101,11 @@ public class QuizGame_Start extends Basis {
         add(countdownLabel, gbc);
 
         frageLabel.setVisible(false);
-        frageLabel.setForeground(new Color(200, 200, 200)); // Light gray text for question
+        frageLabel.setForeground(new Color(200, 200, 200));
         for (JButton button : antwortButtons) {
             button.setVisible(false);
-            button.setBackground(new Color(70, 70, 70)); // Dark gray background for buttons
-            button.setForeground(new Color(255, 255, 255)); // White text for buttons
+            button.setBackground(new Color(70, 70, 70));
+            button.setForeground(Color.WHITE);
             button.setFont(new Font("Arial", Font.BOLD, 24));
             button.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         }
@@ -95,7 +128,8 @@ public class QuizGame_Start extends Basis {
     private void zeigeAntworten() {
         if (aktuelleFrage >= fragenListe.size()) {
             JOptionPane.showMessageDialog(this, "Wir kommen dem Ende näher!", "Weiter", JOptionPane.INFORMATION_MESSAGE);
-            new QuizGame_Mitte(totalPoints);
+            new QuizGame_Mitte(benutzername, totalPoints);
+
             this.dispose();
             return;
         }
@@ -141,8 +175,8 @@ public class QuizGame_Start extends Basis {
                 if (istRichtig) {
                     currentButton.setBorder(BorderFactory.createLineBorder(Color.GREEN, 10));
                     points = ph.getPoints();
-                    totalPoints += points; // Increment total points
-                    pointsLabel.setText("Punkte: " + totalPoints); // Update points label
+                    totalPoints += points;
+                    pointsLabel.setText("Punkte: " + totalPoints);
                 } else {
                     points = 0;
                     currentButton.setBorder(BorderFactory.createLineBorder(Color.RED, 10));
@@ -158,9 +192,7 @@ public class QuizGame_Start extends Basis {
                     }
                 }
 
-                // Add a delay before showing the points dialog
                 Timer delayTimer = new Timer(3000, ev -> {
-                    // Punkte zeigen und nächste Frage
                     JOptionPane.showMessageDialog(
                             QuizGame_Start.this,
                             "Du hast " + points + " Punkte erreicht!",
@@ -169,13 +201,13 @@ public class QuizGame_Start extends Basis {
                     );
 
                     aktuelleFrage++;
-                    for (int btnNr = 0; btnNr < antwortButtons.length; btnNr++) {
-                        antwortButtons[btnNr].setEnabled(true);
-                        antwortButtons[btnNr].setBorder(null);
+                    for (JButton b : antwortButtons) {
+                        b.setEnabled(true);
+                        b.setBorder(null);
                     }
                     zeigeAntworten();
                 });
-                delayTimer.setRepeats(false); // Ensure the timer only fires once
+                delayTimer.setRepeats(false);
                 delayTimer.start();
             });
         }
