@@ -5,9 +5,18 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.geom.RoundRectangle2D;
 
+/**
+ * Die Klasse {@code Hauptmenu} stellt das Hauptmenü des Musik-Quiz dar.
+ * <p>
+ * Sie zeigt den Benutzernamen, Avatar, sowie verschiedene Navigationsbuttons,
+ * darunter Optionen zum Starten des Quiz, Anzeigen des Leaderboards,
+ * Spieleranzahl und Abmelden.
+ */
 public class Hauptmenu extends JFrame {
 
     private String aktuellerAvatar = "Quiz/avatars/avatar1.jpg";
+
+    // Farbschema
     private final Color backgroundColorStart = new Color(30, 30, 50);
     private final Color backgroundColorEnd = new Color(50, 50, 80);
     private final Color buttonColorPrimary = new Color(100, 149, 237);
@@ -17,15 +26,31 @@ public class Hauptmenu extends JFrame {
     private final Color textColor = new Color(230, 230, 230);
     private final Color usernameColor = new Color(255, 215, 0);
 
+    /**
+     * Konstruktor, um das Hauptmenü mit dem Standardavatar zu starten.
+     *
+     * @param benutzername Der Name des aktuell angemeldeten Benutzers.
+     */
     public Hauptmenu(String benutzername) {
         init(benutzername);
     }
 
+    /**
+     * Konstruktor, um das Hauptmenü mit einem benutzerdefinierten Avatar zu starten.
+     *
+     * @param benutzername Der Name des aktuell angemeldeten Benutzers.
+     * @param avatarPfad   Der Pfad zum Avatarbild.
+     */
     public Hauptmenu(String benutzername, String avatarPfad) {
         this.aktuellerAvatar = avatarPfad;
         init(benutzername);
     }
 
+    /**
+     * Initialisiert die GUI-Komponenten und baut das Layout des Hauptmenüs.
+     *
+     * @param benutzername Der Name des Benutzers, der angezeigt werden soll.
+     */
     private void init(String benutzername) {
         setTitle("Hauptmenü");
         setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -52,6 +77,12 @@ public class Hauptmenu extends JFrame {
         setVisible(true);
     }
 
+    /**
+     * Erstellt das obere Panel mit Willkommensnachricht, Benutzername und Avatar.
+     *
+     * @param benutzername Der Name des aktuell angemeldeten Benutzers.
+     * @return Das konfigurierte JPanel.
+     */
     private JPanel createTopPanel(String benutzername) {
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
@@ -95,6 +126,12 @@ public class Hauptmenu extends JFrame {
         return panel;
     }
 
+    /**
+     * Erstellt das zentrale Panel mit Buttons zum Starten des Quiz, Leaderboard, Spieleranzahl und Logout.
+     *
+     * @param benutzername Der Name des aktuell angemeldeten Benutzers.
+     * @return Das konfigurierte JPanel.
+     */
     private JPanel createCenterPanel(String benutzername) {
         JPanel centerPanel = new JPanel(new GridBagLayout()) {
             @Override
@@ -131,14 +168,15 @@ public class Hauptmenu extends JFrame {
         JButton logoutBtn = createStyledButton("Abmelden - und Tschüss", logoutColor, new Dimension(500, 80));
         centerPanel.add(logoutBtn, gbc);
 
+        // Aktionen
         quizBtn.addActionListener(e -> {
             dispose();
-            new QuizGame_Start(benutzername, 0);
+            new QuizGame_Start(benutzername, 0, aktuellerAvatar);
         });
 
         leaderboardBtn.addActionListener(e -> {
             dispose();
-            new Leaderboard(benutzername);
+            new Leaderboard(benutzername, aktuellerAvatar);
         });
 
         playerCountBtn.addActionListener(e -> {
@@ -154,6 +192,14 @@ public class Hauptmenu extends JFrame {
         return centerPanel;
     }
 
+    /**
+     * Erstellt einen individuell gestalteten Button mit abgerundeten Ecken und Hintergrundfarbe.
+     *
+     * @param text Der anzuzeigende Text auf dem Button.
+     * @param bgColor Die Hintergrundfarbe des Buttons.
+     * @param size Die bevorzugte Größe des Buttons.
+     * @return Der gestaltete JButton.
+     */
     private JButton createStyledButton(String text, Color bgColor, Dimension size) {
         JButton btn = new JButton(text) {
             @Override

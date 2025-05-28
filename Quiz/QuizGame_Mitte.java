@@ -8,30 +8,64 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Die Klasse {@code QuizGame_Mitte} repräsentiert die mittlere Runde des Quiz-Spiels.
+ * In dieser Runde werden Fragen aus der Datei "lieder.txt" geladen.
+ * Der Benutzer sammelt Punkte durch richtige Antworten.
+ */
 public class QuizGame_Mitte extends Basis {
 
+    /** Liste der geladenen Fragen */
     private List<Frage> fragenListe;
+
+    /** Index der aktuell bearbeiteten Frage */
     private int aktuelleFrage = 0;
+
+    /** Label zur Anzeige des Countdowns */
     private JLabel countdownLabel;
+
+    /** Timer zur Steuerung des Countdowns */
     private Timer countdownTimer;
+
+    /** Startwert für den Countdown */
     private int countdownValue = 5;
+
+    /** Label für den Titel der Fragerunde */
     private JLabel titelLabel;
+
+    /** Gesamtpunktestand des Spielers */
     private int totalPoints;
+
+    /** Anzeigeelement für den Punktestand */
     private JLabel pointsLabel;
+
+    /** Benutzername des Spielers */
     private String benutzername;
 
-    public QuizGame_Mitte(String benutzername, int totalPoints) {
+    /** Pfad zum gewählten Avatar */
+    private String avatarPfad;
+
+    /**
+     * Konstruktor zum Starten der mittleren Quiz-Runde mit übergebenem Punktestand.
+     *
+     * @param benutzername Der Name des Spielers
+     * @param totalPoints  Bisher erreichte Punktzahl
+     * @param avatarPfad   Pfad zum Avatarbild
+     */
+    public QuizGame_Mitte(String benutzername, int totalPoints, String avatarPfad) {
         super("Lyric!", new String[]{"A", "B", "C", "D"});
         this.benutzername = benutzername;
         this.totalPoints = totalPoints;
+        this.avatarPfad = avatarPfad;
 
-        // Modernes Dialog-Design
+        // UI-Einstellungen (Dialog-Stil)
         UIManager.put("OptionPane.messageFont", new Font("Segoe UI", Font.PLAIN, 16));
         UIManager.put("OptionPane.buttonFont", new Font("Segoe UI", Font.BOLD, 14));
         UIManager.put("OptionPane.background", new Color(40, 40, 40));
         UIManager.put("Panel.background", new Color(40, 40, 40));
         UIManager.put("OptionPane.messageForeground", Color.WHITE);
 
+        // Fragen aus Datei laden
         try {
             fragenListe = FragenLader.ladeFragen("Quiz/lieder.txt");
             Collections.shuffle(fragenListe);
@@ -42,10 +76,9 @@ public class QuizGame_Mitte extends Basis {
         }
 
         getContentPane().setBackground(new Color(30, 30, 30));
-
         GridBagConstraints gbc = new GridBagConstraints();
 
-        // Punkte-Label
+        // Punkte-Anzeige
         pointsLabel = new JLabel("Punkte: " + totalPoints, SwingConstants.LEFT);
         pointsLabel.setFont(new Font("Arial", Font.BOLD, 16));
         pointsLabel.setForeground(new Color(255, 105, 180));
@@ -56,7 +89,7 @@ public class QuizGame_Mitte extends Basis {
         gbc.insets = new Insets(10, 10, 0, 0);
         add(pointsLabel, gbc);
 
-        // Abbrechen-Button
+        // Abbrechen-Button mit Dialog
         JButton btnAbbrechen = new JButton("Quiz abbrechen");
         btnAbbrechen.setBackground(new Color(200, 0, 0));
         btnAbbrechen.setForeground(Color.WHITE);
@@ -64,7 +97,6 @@ public class QuizGame_Mitte extends Basis {
         btnAbbrechen.setFocusPainted(false);
         btnAbbrechen.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
         btnAbbrechen.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-
         btnAbbrechen.addActionListener(e -> {
             int option = JOptionPane.showConfirmDialog(
                     this,
@@ -74,7 +106,7 @@ public class QuizGame_Mitte extends Basis {
                     JOptionPane.WARNING_MESSAGE
             );
             if (option == JOptionPane.YES_OPTION) {
-                new Hauptmenu(benutzername);
+                new Hauptmenu(benutzername, avatarPfad);
                 this.dispose();
             }
         });
@@ -96,7 +128,7 @@ public class QuizGame_Mitte extends Basis {
         gbc.insets = new Insets(10, 10, 5, 10);
         add(titelLabel, gbc);
 
-        // Countdown
+        // Countdown-Anzeige
         countdownLabel = new JLabel("" + countdownValue, SwingConstants.CENTER);
         countdownLabel.setFont(new Font("Arial", Font.BOLD, 60));
         countdownLabel.setForeground(new Color(173, 216, 230));
@@ -106,6 +138,7 @@ public class QuizGame_Mitte extends Basis {
         gbc.insets = new Insets(5, 10, 20, 10);
         add(countdownLabel, gbc);
 
+        // Frage und Antwort-Buttons vorbereiten
         frageLabel.setVisible(false);
         frageLabel.setForeground(new Color(200, 200, 200));
         frageLabel.setFont(new Font("Arial", Font.BOLD, 20));
@@ -117,6 +150,7 @@ public class QuizGame_Mitte extends Basis {
             button.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         }
 
+        // Countdown starten
         countdownTimer = new Timer(1000, e -> {
             countdownValue--;
             if (countdownValue > 0) {
@@ -131,10 +165,14 @@ public class QuizGame_Mitte extends Basis {
         countdownTimer.start();
     }
 
+    /**
+     * Zeigt die nächste Frage und mögliche Antworten an.
+     * Wenn alle Fragen beantwortet wurden, wird zur Endrunde weitergeleitet.
+     */
     private void zeigeAntworten() {
         if (aktuelleFrage >= fragenListe.size()) {
             JOptionPane.showMessageDialog(this, "Jetzt sind wir dem Ende ganz nah!", "Weiter", JOptionPane.INFORMATION_MESSAGE);
-            new QuizGame_Ende(benutzername, totalPoints);
+            new QuizGame_Ende(benutzername, totalPoints, avatarPfad);
             this.dispose();
             return;
         }
@@ -146,6 +184,7 @@ public class QuizGame_Mitte extends Basis {
         Frage frage = fragenListe.get(aktuelleFrage);
         frageLabel.setText(frage.frageText);
 
+        // Antwort-Buttons mit Text befüllen
         for (int i = 0; i < antwortButtons.length; i++) {
             JButton button = antwortButtons[i];
             button.setVisible(true);
@@ -155,6 +194,7 @@ public class QuizGame_Mitte extends Basis {
         PointHandler ph = new PointHandler();
         ph.start();
 
+        // ActionListener für Antwortauswahl
         for (int i = 0; i < antwortButtons.length; i++) {
             JButton currentButton = antwortButtons[i];
             String antwortBuchstabe = switch (i) {
@@ -165,10 +205,12 @@ public class QuizGame_Mitte extends Basis {
                 default -> "";
             };
 
+            // Vorherige ActionListener entfernen
             for (ActionListener al : currentButton.getActionListeners()) {
                 currentButton.removeActionListener(al);
             }
 
+            // Aktion bei Antwortwahl
             currentButton.addActionListener(e -> {
                 for (JButton b : antwortButtons) {
                     b.setEnabled(false);
@@ -197,6 +239,7 @@ public class QuizGame_Mitte extends Basis {
                     }
                 }
 
+                // Nach 3 Sekunden nächste Frage anzeigen
                 Timer delayTimer = new Timer(3000, ev -> {
                     JOptionPane.showMessageDialog(
                             QuizGame_Mitte.this,
@@ -218,3 +261,5 @@ public class QuizGame_Mitte extends Basis {
         }
     }
 }
+
+

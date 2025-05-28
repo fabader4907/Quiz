@@ -8,23 +8,55 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Die Klasse {@code QuizGame_Start} stellt den Startbildschirm eines Quiz-Spiels dar.
+ * Sie zeigt Fragen an, verwaltet die Punkte und steuert den Spielfortschritt.
+ */
 public class QuizGame_Start extends Basis {
 
+    /** Benutzername des Spielers */
     private String benutzername;
+
+    /** Pfad zum gewählten Avatarbild */
+    private String avatarPfad;
+
+    /** Liste der geladenen Fragen */
     private List<Frage> fragenListe;
+
+    /** Index der aktuell angezeigten Frage */
     private int aktuelleFrage = 0;
+
+    /** Label zur Anzeige des Countdowns vor Start */
     private JLabel countdownLabel;
+
+    /** Timer zur Steuerung des Countdowns */
     private Timer countdownTimer;
+
+    /** Aktueller Countdown-Wert */
     private int countdownValue = 5;
+
+    /** Überschrift des Spiels */
     private JLabel titelLabel;
+
+    /** Aktuell erreichte Gesamtpunktzahl */
     private int totalPoints = 0;
+
+    /** Label zur Anzeige der aktuellen Punkte */
     private JLabel pointsLabel;
 
-    public QuizGame_Start(String benutzername, int i) {
+    /**
+     * Konstruktor: Initialisiert das Quiz-Spiel.
+     *
+     * @param benutzername Name des Spielers
+     * @param i nicht verwendet (reserviert für zukünftige Erweiterungen)
+     * @param avatarPfad Pfad zum Avatarbild des Spielers
+     */
+    public QuizGame_Start(String benutzername, int i, String avatarPfad) {
         super("Lyric!", new String[]{"A", "B", "C", "D"});
         this.benutzername = benutzername;
+        this.avatarPfad = avatarPfad;
 
-        // Modernes Dialog-Design
+        // UI-Styling für Dialoge
         UIManager.put("OptionPane.messageFont", new Font("Segoe UI", Font.PLAIN, 16));
         UIManager.put("OptionPane.buttonFont", new Font("Segoe UI", Font.BOLD, 14));
         UIManager.put("OptionPane.background", new Color(40, 40, 40));
@@ -32,6 +64,7 @@ public class QuizGame_Start extends Basis {
         UIManager.put("OptionPane.messageForeground", Color.WHITE);
 
         try {
+            // Fragen aus Datei laden und zufällig mischen
             fragenListe = FragenLader.ladeFragen("Quiz/allgemein.txt");
             Collections.shuffle(fragenListe);
             fragenListe = fragenListe.stream().limit(10).collect(Collectors.toList());
@@ -40,8 +73,10 @@ public class QuizGame_Start extends Basis {
             return;
         }
 
+        // Benutzeroberfläche gestalten
         getContentPane().setBackground(new Color(30, 30, 30));
 
+        // Titel
         titelLabel = new JLabel("Zeige dein Musikwissen", SwingConstants.CENTER);
         titelLabel.setFont(new Font("Arial", Font.BOLD, 28));
         titelLabel.setForeground(new Color(200, 200, 200));
@@ -52,6 +87,7 @@ public class QuizGame_Start extends Basis {
         gbc.insets = new Insets(10, 10, 5, 10);
         add(titelLabel, gbc);
 
+        // Punktestand-Anzeige
         pointsLabel = new JLabel("Punkte: " + totalPoints, SwingConstants.LEFT);
         pointsLabel.setFont(new Font("Arial", Font.BOLD, 16));
         pointsLabel.setForeground(new Color(255, 105, 180));
@@ -62,7 +98,7 @@ public class QuizGame_Start extends Basis {
         gbc.insets = new Insets(10, 10, 0, 0);
         add(pointsLabel, gbc);
 
-        // Button "Quiz abbrechen"
+        // Abbrechen-Button
         JButton btnAbbrechen = new JButton("Quiz abbrechen");
         btnAbbrechen.setBackground(new Color(200, 0, 0));
         btnAbbrechen.setForeground(Color.WHITE);
@@ -70,6 +106,7 @@ public class QuizGame_Start extends Basis {
         btnAbbrechen.setFocusPainted(false);
         btnAbbrechen.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
 
+        // Aktion für Abbrechen-Button
         btnAbbrechen.addActionListener(e -> {
             int option = JOptionPane.showConfirmDialog(
                     this,
@@ -79,11 +116,12 @@ public class QuizGame_Start extends Basis {
                     JOptionPane.WARNING_MESSAGE
             );
             if (option == JOptionPane.YES_OPTION) {
-                new Hauptmenu(benutzername);
+                new Hauptmenu(benutzername, avatarPfad);
                 this.dispose();
             }
         });
 
+        // Position des Abbrechen-Buttons
         GridBagConstraints gbcAbbruch = new GridBagConstraints();
         gbcAbbruch.gridx = 1;
         gbcAbbruch.gridy = 0;
@@ -91,6 +129,7 @@ public class QuizGame_Start extends Basis {
         gbcAbbruch.insets = new Insets(10, 0, 0, 10);
         add(btnAbbrechen, gbcAbbruch);
 
+        // Countdown-Anzeige
         countdownLabel = new JLabel("" + countdownValue, SwingConstants.CENTER);
         countdownLabel.setFont(new Font("Arial", Font.BOLD, 60));
         countdownLabel.setForeground(new Color(173, 216, 230));
@@ -100,8 +139,10 @@ public class QuizGame_Start extends Basis {
         gbc.insets = new Insets(5, 10, 20, 10);
         add(countdownLabel, gbc);
 
+        // Einstellungen für Frage und Antwortbuttons
         frageLabel.setVisible(false);
         frageLabel.setForeground(new Color(200, 200, 200));
+        frageLabel.setFont(new Font("Arial", Font.PLAIN, 22));
         for (JButton button : antwortButtons) {
             button.setVisible(false);
             button.setBackground(new Color(70, 70, 70));
@@ -110,6 +151,7 @@ public class QuizGame_Start extends Basis {
             button.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         }
 
+        // Countdown-Timer starten
         countdownTimer = new Timer(1000, e -> {
             countdownValue--;
             if (countdownValue > 0) {
@@ -118,18 +160,21 @@ public class QuizGame_Start extends Basis {
                 countdownLabel.setText("Los!");
                 countdownTimer.stop();
                 zeigeAntworten();
-                new Timer(1000, e1 -> {});
             }
         });
         countdownTimer.setInitialDelay(1000);
         countdownTimer.start();
     }
 
+    /**
+     * Zeigt die aktuelle Frage und deren Antwortmöglichkeiten an.
+     * Prüft, ob das Spiel fortgesetzt oder beendet werden soll,
+     * und aktualisiert die Benutzeroberfläche entsprechend.
+     */
     private void zeigeAntworten() {
         if (aktuelleFrage >= fragenListe.size()) {
             JOptionPane.showMessageDialog(this, "Wir kommen dem Ende näher!", "Weiter", JOptionPane.INFORMATION_MESSAGE);
-            new QuizGame_Mitte(benutzername, totalPoints);
-
+            new QuizGame_Mitte(benutzername, totalPoints, avatarPfad);
             this.dispose();
             return;
         }
@@ -141,6 +186,7 @@ public class QuizGame_Start extends Basis {
         Frage frage = fragenListe.get(aktuelleFrage);
         frageLabel.setText(frage.frageText);
 
+        // Antwortmöglichkeiten anzeigen
         for (int i = 0; i < antwortButtons.length; i++) {
             JButton button = antwortButtons[i];
             button.setVisible(true);
@@ -150,6 +196,7 @@ public class QuizGame_Start extends Basis {
         PointHandler ph = new PointHandler();
         ph.start();
 
+        // ActionListener für Antwortbuttons
         for (int i = 0; i < antwortButtons.length; i++) {
             JButton currentButton = antwortButtons[i];
             String antwortBuchstabe = switch (i) {
@@ -160,10 +207,12 @@ public class QuizGame_Start extends Basis {
                 default -> "";
             };
 
+            // Vorherige ActionListener entfernen
             for (ActionListener al : currentButton.getActionListeners()) {
                 currentButton.removeActionListener(al);
             }
 
+            // Neuer ActionListener für Antwortauswahl
             currentButton.addActionListener(e -> {
                 for (JButton b : antwortButtons) {
                     b.setEnabled(false);
@@ -192,6 +241,7 @@ public class QuizGame_Start extends Basis {
                     }
                 }
 
+                // Verzögerung bis zur nächsten Frage
                 Timer delayTimer = new Timer(3000, ev -> {
                     JOptionPane.showMessageDialog(
                             QuizGame_Start.this,

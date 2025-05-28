@@ -6,10 +6,20 @@ import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Die Klasse {@code AvatarAuswahl} stellt eine grafische Benutzeroberfläche dar,
+ * über die ein Benutzer einen Avatar aus einer Auswahl auswählen kann.
+ * Die Auswahl wird benutzerspezifisch gespeichert und beim nächsten Start geladen.
+ */
 public class AvatarAuswahl extends JFrame {
 
     private static final String AVATAR_FILE = "Quiz/user_avatars.txt";
 
+    /**
+     * Konstruktor zur Initialisierung der Avatar-Auswahloberfläche.
+     *
+     * @param benutzername Der aktuell angemeldete Benutzername.
+     */
     public AvatarAuswahl(String benutzername) {
         setTitle("Wähle deinen Avatar");
         setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -56,6 +66,12 @@ public class AvatarAuswahl extends JFrame {
         setVisible(true);
     }
 
+    /**
+     * Speichert den ausgewählten Avatarpfad für den angegebenen Benutzer.
+     *
+     * @param benutzername Der Benutzername, dem der Avatar zugeordnet werden soll.
+     * @param pfad         Der Pfad zum ausgewählten Avatarbild.
+     */
     public static void saveAvatarForUser(String benutzername, String pfad) {
         Map<String, String> map = loadAvatarMap();
         map.put(benutzername, pfad);
@@ -68,11 +84,23 @@ public class AvatarAuswahl extends JFrame {
         }
     }
 
+    /**
+     * Lädt den Avatarpfad für den angegebenen Benutzer.
+     * Falls kein Avatar vorhanden ist, wird ein Standardavatar zurückgegeben.
+     *
+     * @param benutzername Der Benutzername, dessen Avatar geladen werden soll.
+     * @return Pfad zum Avatarbild.
+     */
     public static String loadAvatarForUser(String benutzername) {
         Map<String, String> map = loadAvatarMap();
         return map.getOrDefault(benutzername, "Quiz/avatars/avatar1.jpg");
     }
 
+    /**
+     * Lädt alle Benutzer-Avatar-Zuordnungen aus der Datei.
+     *
+     * @return Eine Map mit Benutzernamen als Schlüssel und Avatarpfaden als Werte.
+     */
     private static Map<String, String> loadAvatarMap() {
         Map<String, String> map = new HashMap<>();
         File file = new File(AVATAR_FILE);

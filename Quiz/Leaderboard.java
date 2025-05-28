@@ -10,13 +10,30 @@ import java.awt.geom.RoundRectangle2D;
 import java.io.*;
 import java.util.*;
 
+/**
+ * Diese Klasse stellt das Leaderboard-Fenster dar, in dem die Highscores der Spieler angezeigt werden.
+ * Sie lädt die Daten aus einer Datei, sortiert sie und zeigt sie in einer Tabelle an.
+ */
 public class Leaderboard extends JFrame {
 
-    private static final String SCORE_FILE = "scores.txt";
-    private final String benutzername; // Benutzername wird gespeichert
+    /** Pfad zur Datei mit den gespeicherten Punkten */
+    private static final String SCORE_FILE = "Quiz/scores.txt";
 
-    public Leaderboard(String benutzername) {
+    /** Benutzername des aktuell eingeloggten Benutzers */
+    private final String benutzername;
+
+    /** Avatarpfad des aktuell eingeloggten Benutzers */
+    private String avatarPfad;
+
+    /**
+     * Konstruktor zur Initialisierung des Leaderboards.
+     *
+     * @param benutzername Der Benutzername des Spielers
+     * @param avatarPfad   Der Pfad zum Avatar des Spielers
+     */
+    public Leaderboard(String benutzername, String avatarPfad) {
         this.benutzername = benutzername;
+        this.avatarPfad = avatarPfad;
 
         setTitle("Leaderboard");
         setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -45,6 +62,11 @@ public class Leaderboard extends JFrame {
         setVisible(true);
     }
 
+    /**
+     * Erstellt das obere Panel mit dem Titel des Leaderboards.
+     *
+     * @return Das konfigurierte JPanel
+     */
     private JPanel createTopPanel() {
         JPanel panel = new JPanel();
         panel.setOpaque(false);
@@ -59,6 +81,11 @@ public class Leaderboard extends JFrame {
         return panel;
     }
 
+    /**
+     * Liest die Punktzahlen aus der Datei und erstellt das zentrale Panel mit einer sortierten Tabelle.
+     *
+     * @return Ein JScrollPane mit der Highscore-Tabelle
+     */
     private JScrollPane createTablePanel() {
         Map<String, Integer> scoreMap = new HashMap<>();
 
@@ -122,6 +149,11 @@ public class Leaderboard extends JFrame {
         return scrollPane;
     }
 
+    /**
+     * Erstellt das untere Panel mit einem Button, um zurück zum Hauptmenü zu gelangen.
+     *
+     * @return Das konfigurierte JPanel
+     */
     private JPanel createBottomPanel() {
         JPanel bottomPanel = new JPanel();
         bottomPanel.setOpaque(false);
@@ -152,7 +184,6 @@ public class Leaderboard extends JFrame {
             dispose(); // Fenster schließen
             String avatarPfad = AvatarAuswahl.loadAvatarForUser(benutzername);
             new Hauptmenu(benutzername, avatarPfad);
-
         });
 
         bottomPanel.add(backButton);

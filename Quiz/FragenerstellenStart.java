@@ -6,13 +6,29 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+/**
+ * Die Klasse {@code FragenerstellenStart} bietet ein GUI-Fenster,
+ * um neue Quizfragen zu erstellen und in einer Datei zu speichern.
+ */
 public class FragenerstellenStart extends JFrame {
 
+    /** Textfeld für die Frage */
     private JTextField frageField;
-    private JTextField[] antwortFields = new JTextField[4];
-    private JComboBox<String> richtigeAntwortBox;
-    private String dateiname; // z.B. "Quiz/allgemein.txt"
 
+    /** Textfelder für die vier Antwortmöglichkeiten (A–D) */
+    private JTextField[] antwortFields = new JTextField[4];
+
+    /** Dropdown zur Auswahl der richtigen Antwort (A–D) */
+    private JComboBox<String> richtigeAntwortBox;
+
+    /** Pfad zur Datei, in der die Frage gespeichert wird */
+    private String dateiname;
+
+    /**
+     * Konstruktor erstellt das Eingabefenster zur Erstellung einer neuen Frage.
+     *
+     * @param dateiname Der Pfad zur Datei, in die die Frage gespeichert werden soll
+     */
     public FragenerstellenStart(String dateiname) {
         this.dateiname = dateiname;
 
@@ -44,7 +60,7 @@ public class FragenerstellenStart extends JFrame {
         add(frageField, gbc);
         gbc.gridx = 0;
 
-        // Antwortfelder
+        // Antwortfelder A-D
         String[] buchstaben = {"A", "B", "C", "D"};
         for (int i = 0; i < 4; i++) {
             gbc.gridy++;
@@ -57,6 +73,7 @@ public class FragenerstellenStart extends JFrame {
             gbc.gridx = 0;
         }
 
+        // Dropdown für richtige Antwort
         gbc.gridy++;
         JLabel richtigLbl = createLabel("Richtige Antwort (A–D):");
         richtigeAntwortBox = new JComboBox<>(new String[]{"A", "B", "C", "D"});
@@ -64,6 +81,7 @@ public class FragenerstellenStart extends JFrame {
         gbc.gridx = 1;
         add(richtigeAntwortBox, gbc);
 
+        // Button zum Speichern der Frage
         gbc.gridy++;
         gbc.gridx = 0;
         JButton speichernBtn = new JButton("Frage speichern");
@@ -74,7 +92,7 @@ public class FragenerstellenStart extends JFrame {
         add(speichernBtn, gbc);
         speichernBtn.addActionListener(e -> frageSpeichern());
 
-// Zurück-Button
+        // Zurück-Button zum Admin-Menü
         gbc.gridy++;
         gbc.gridx = 1;
         JButton zurueckBtn = new JButton("Zurück");
@@ -90,9 +108,14 @@ public class FragenerstellenStart extends JFrame {
         });
 
         setVisible(true);
-
     }
 
+    /**
+     * Hilfsmethode zur Erstellung eines beschrifteten {@link JLabel}s mit Standard-Layout.
+     *
+     * @param text Der Text des Labels
+     * @return das konfigurierte JLabel
+     */
     private JLabel createLabel(String text) {
         JLabel label = new JLabel(text);
         label.setForeground(new Color(220, 220, 220));
@@ -100,6 +123,11 @@ public class FragenerstellenStart extends JFrame {
         return label;
     }
 
+    /**
+     * Speichert die eingegebene Frage zusammen mit den vier Antwortmöglichkeiten
+     * und der richtigen Lösung in einer Textdatei.
+     * Zeigt eine Fehlermeldung, wenn Eingaben fehlen.
+     */
     private void frageSpeichern() {
         String frage = frageField.getText().trim();
         String[] antworten = new String[4];
@@ -114,13 +142,6 @@ public class FragenerstellenStart extends JFrame {
             return;
         }
 
-        // Format:
-        // Frage: ...
-        // A: ...
-        // B: ...
-        // C: ...
-        // D: ...
-        // Richtig: ...
         try (PrintWriter out = new PrintWriter(new FileWriter(dateiname, true))) {
             out.println("Frage: " + frage);
             out.println("A: " + antworten[0]);
@@ -129,16 +150,13 @@ public class FragenerstellenStart extends JFrame {
             out.println("D: " + antworten[3]);
             out.println("Richtig: " + richtig);
             out.print("\n\n");
-
         } catch (IOException e) {
             JOptionPane.showMessageDialog(this, "Fehler beim Speichern.", "Fehler", JOptionPane.ERROR_MESSAGE);
             return;
         }
-
 
         JOptionPane.showMessageDialog(this, "Frage gespeichert!", "Erfolg", JOptionPane.INFORMATION_MESSAGE);
         frageField.setText("");
         for (JTextField tf : antwortFields) tf.setText("");
     }
 }
-    

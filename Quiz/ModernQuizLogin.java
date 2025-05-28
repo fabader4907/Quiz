@@ -14,18 +14,29 @@ import java.util.Map;
  */
 public class ModernQuizLogin extends JFrame {
 
+    /** Map zur Speicherung von Benutzernamen und Passwörtern */
     private Map<String, String> userMap = new HashMap<>();
+
+    /** Textfeld für den Benutzernamen */
     private JTextField usernameField;
+
+    /** Passwortfeld für das Passwort */
     private JPasswordField passwordField;
+
+    /** Label zur Anzeige von Fehler- oder Erfolgsmeldungen */
     private JLabel msg;
 
-    private String aktuellerBenutzer; // Zum Speichern des angemeldeten Benutzernamens
+    /** Der aktuell angemeldete Benutzer */
+    private String aktuellerBenutzer;
 
+    /**
+     * Konstruktor zum Initialisieren des Login-Fensters.
+     */
     public ModernQuizLogin() {
         loadUsers();
 
         setTitle("Quiz Anmeldung");
-        setExtendedState(JFrame.MAXIMIZED_BOTH); // Fenster auf maximale Größe setzen
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
@@ -37,7 +48,7 @@ public class ModernQuizLogin extends JFrame {
         panel.setBackground(bgColor);
         panel.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(20, 20, 20, 20); // Abstände erhöht
+        gbc.insets = new Insets(20, 20, 20, 20);
         gbc.fill = GridBagConstraints.HORIZONTAL;
 
         JLabel title = new JLabel("Willkommen beim Quiz", SwingConstants.CENTER);
@@ -107,6 +118,9 @@ public class ModernQuizLogin extends JFrame {
         setVisible(true);
     }
 
+    /**
+     * Behandelt den Login-Vorgang und öffnet bei Erfolg das Hauptmenü oder das Admin-Panel.
+     */
     private void handleLogin() {
         String user = usernameField.getText();
         String pass = new String(passwordField.getPassword());
@@ -126,11 +140,17 @@ public class ModernQuizLogin extends JFrame {
         }
     }
 
+    /**
+     * Startet das Quizspiel und lädt den Avatar für den aktuell angemeldeten Benutzer.
+     */
     private void starteQuizGame() {
         String avatarPfad = AvatarAuswahl.loadAvatarForUser(aktuellerBenutzer);
         new Hauptmenu(aktuellerBenutzer, avatarPfad);
     }
 
+    /**
+     * Öffnet das Registrierungsfenster, in dem neue Benutzer erstellt werden können.
+     */
     private void openRegisterWindow() {
         JDialog registerDialog = new JDialog(this, "Benutzer registrieren", true);
         registerDialog.setSize(500, 300);
@@ -178,6 +198,9 @@ public class ModernQuizLogin extends JFrame {
         registerDialog.setVisible(true);
     }
 
+    /**
+     * Speichert alle Benutzerinformationen dauerhaft in einer Datei.
+     */
     private void saveUsers() {
         try (PrintWriter writer = new PrintWriter(new FileWriter("Quiz/users.txt"))) {
             for (Map.Entry<String, String> entry : userMap.entrySet()) {
@@ -188,6 +211,9 @@ public class ModernQuizLogin extends JFrame {
         }
     }
 
+    /**
+     * Lädt die gespeicherten Benutzerdaten aus der Datei beim Start der Anwendung.
+     */
     private void loadUsers() {
         File file = new File("Quiz/users.txt");
         if (!file.exists()) return;
@@ -205,6 +231,12 @@ public class ModernQuizLogin extends JFrame {
         }
     }
 
+    /**
+     * Speichert den Punktestand eines Benutzers in die Score-Datei.
+     *
+     * @param name   Der Name des Benutzers
+     * @param punkte Die erreichte Punktzahl
+     */
     private void speichereScore(String name, int punkte) {
         try (PrintWriter writer = new PrintWriter(new FileWriter("Quiz/scores.txt", true))) {
             writer.println(name + ":" + punkte);

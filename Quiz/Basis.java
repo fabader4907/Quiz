@@ -2,13 +2,29 @@ package Quiz;
 
 import javax.swing.*;
 import java.awt.*;
-import javax.sound.sampled.*;
 
+/**
+ * Die Klasse {@code Basis} stellt ein grundlegendes Fenster für eine Quizfrage dar.
+ * Es enthält ein Label für die Frage sowie eine dynamische Anzahl an Antwortbuttons.
+ * Dieses Grundlayout kann für verschiedene Quizfragen wiederverwendet werden.
+ */
 public class Basis extends JFrame {
+
+    /** Label zur Anzeige der Quizfrage */
     protected JLabel frageLabel;
+
+    /** Array von Buttons für die Antwortmöglichkeiten */
     protected JButton[] antwortButtons;
+
+    /** ButtonGroup zur Gruppierung der Antwortbuttons (für spätere Erweiterung) */
     protected ButtonGroup antwortGruppe;
 
+    /**
+     * Konstruktor zur Erstellung des Quiz-Fensters mit Frage und Antwortmöglichkeiten.
+     *
+     * @param frage     Der Fragetext, der angezeigt werden soll.
+     * @param antworten Ein Array von Strings mit den möglichen Antworten.
+     */
     public Basis(String frage, String[] antworten/*, String bildPfad, String soundPfad*/) {
         // Fenster-Einstellungen
         setTitle("Quiz Frage");
@@ -39,8 +55,8 @@ public class Basis extends JFrame {
             antwortButtons[i].setPreferredSize(new Dimension(400, 150));
             antwortGruppe.add(antwortButtons[i]);
 
-            gbc.gridx = i % 2;               // 0 oder 1
-            gbc.gridy = 1 + (i / 2);         // Zeile steigt pro 2 Antworten
+            gbc.gridx = i % 2;               // 0 oder 1 (Spalte)
+            gbc.gridy = 1 + (i / 2);         // Zeile steigt bei jeder 2. Antwort
             gbc.gridwidth = 1;
             gbc.weightx = 0.5;
             gbc.weighty = 0.2;

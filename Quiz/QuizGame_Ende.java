@@ -4,29 +4,65 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.io.*;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Die Klasse QuizGame_Ende stellt das finale Quiz-Fenster dar, in dem der Benutzer
+ * Fragen beantwortet und Punkte sammelt.
+ * Nach der Beantwortung der Fragen werden die Punkte gespeichert und ein Highscore-Bildschirm angezeigt.
+ */
 public class QuizGame_Ende extends Basis {
 
+    /** Liste der Fragen, die im Quiz gestellt werden */
     private List<Frage> fragenListe;
+
+    /** Aktuelle Frageindex */
     private int aktuelleFrage = 0;
+
+    /** Countdown-Label vor Start der Fragenanzeige */
     private JLabel countdownLabel;
+
+    /** Swing-Timer für den Countdown */
     private Timer countdownTimer;
+
+    /** Aktueller Countdown-Zähler */
     private int countdownValue = 5;
+
+    /** Titel-Label des Quiz */
     private JLabel titelLabel;
+
+    /** Gesamtpunktestand des Spielers */
     private int totalPoints;
+
+    /** Label zur Anzeige des aktuellen Punktestands */
     private JLabel pointsLabel;
+
+    /** Textbereich für die gestellte Frage */
     private JTextArea frageTextArea;
+
+    /** Benutzername des Spielers */
     private String benutzername;
 
-    public QuizGame_Ende(String benutzername, int totalPoints) {
+    /** Pfad zum Avatar des Spielers */
+    private String avatarPfad;
+
+    /**
+     * Konstruktor für das Quiz-Fenster.
+     *
+     * @param benutzername Name des Spielers
+     * @param totalPoints  Startpunktestand
+     * @param avatarPfad   Pfad zum Avatarbild
+     */
+    public QuizGame_Ende(String benutzername, int totalPoints, String avatarPfad) {
         super("Lyric!", new String[]{"A", "B", "C", "D"});
         this.benutzername = benutzername;
         this.totalPoints = totalPoints;
+        this.avatarPfad = avatarPfad;
 
-        // Modernes Dialog-Design
+        // UI-Design anpassen
         UIManager.put("OptionPane.messageFont", new Font("Segoe UI", Font.PLAIN, 16));
         UIManager.put("OptionPane.buttonFont", new Font("Segoe UI", Font.BOLD, 14));
         UIManager.put("OptionPane.background", new Color(40, 40, 40));
@@ -43,10 +79,9 @@ public class QuizGame_Ende extends Basis {
         }
 
         getContentPane().setBackground(new Color(30, 30, 30));
-
         GridBagConstraints gbc = new GridBagConstraints();
 
-        // Titel
+        // Titelanzeige
         titelLabel = new JLabel("Beweise dein Können! Vervollständige die Lyrics", SwingConstants.CENTER);
         titelLabel.setFont(new Font("Arial", Font.BOLD, 28));
         titelLabel.setForeground(new Color(200, 200, 200));
@@ -56,7 +91,7 @@ public class QuizGame_Ende extends Basis {
         gbc.insets = new Insets(10, 10, 5, 10);
         add(titelLabel, gbc);
 
-        // Punkte
+        // Punkteanzeige
         pointsLabel = new JLabel("Punkte: " + totalPoints, SwingConstants.LEFT);
         pointsLabel.setFont(new Font("Arial", Font.BOLD, 16));
         pointsLabel.setForeground(new Color(255, 105, 180));
@@ -67,7 +102,7 @@ public class QuizGame_Ende extends Basis {
         gbc.insets = new Insets(10, 10, 0, 0);
         add(pointsLabel, gbc);
 
-        // Button "Quiz abbrechen"
+        // Quiz abbrechen-Button
         JButton btnAbbrechen = new JButton("Quiz abbrechen");
         btnAbbrechen.setBackground(new Color(200, 0, 0));
         btnAbbrechen.setForeground(Color.WHITE);
@@ -97,7 +132,7 @@ public class QuizGame_Ende extends Basis {
         gbcAbbruch.insets = new Insets(10, 0, 0, 10);
         add(btnAbbrechen, gbcAbbruch);
 
-        // Countdown
+        // Countdown-Anzeige
         countdownLabel = new JLabel("" + countdownValue, SwingConstants.CENTER);
         countdownLabel.setFont(new Font("Arial", Font.BOLD, 60));
         countdownLabel.setForeground(new Color(173, 216, 230));
@@ -107,7 +142,7 @@ public class QuizGame_Ende extends Basis {
         gbc.insets = new Insets(5, 10, 20, 10);
         add(countdownLabel, gbc);
 
-        // Frage-Textbereich
+        // Frage-Textanzeige
         frageTextArea = new JTextArea();
         frageTextArea.setEditable(false);
         frageTextArea.setLineWrap(true);
@@ -129,6 +164,7 @@ public class QuizGame_Ende extends Basis {
 
         frageLabel.setVisible(false);
 
+        // Antwortbuttons anpassen und verstecken
         for (JButton button : antwortButtons) {
             button.setVisible(false);
             button.setBackground(new Color(70, 70, 70));
@@ -148,6 +184,7 @@ public class QuizGame_Ende extends Basis {
             add(antwortButtons[i], buttonGbc);
         }
 
+        // Countdown starten
         countdownTimer = new Timer(1000, e -> {
             countdownValue--;
             if (countdownValue > 0) {
@@ -162,12 +199,13 @@ public class QuizGame_Ende extends Basis {
         countdownTimer.start();
     }
 
+    /**
+     * Zeigt die aktuellen Fragen und Antwortoptionen an.
+     * Startet einen Punktetimer und verarbeitet die Antwortlogik.
+     */
     private void zeigeAntworten() {
         if (aktuelleFrage >= fragenListe.size()) {
             speicherePunkte();
-            JOptionPane.showMessageDialog(this, "Du hast es geschafft!", "Fertig", JOptionPane.INFORMATION_MESSAGE);
-            new Leaderboard(benutzername);
-            this.dispose();
             return;
         }
 
@@ -250,12 +288,51 @@ public class QuizGame_Ende extends Basis {
         }
     }
 
+    /**
+     * Speichert die erreichten Punkte des Benutzers in einer Datei.
+     * Wenn bereits Punkte vorhanden sind, werden sie nur überschrieben,
+     * wenn die neuen höher sind.
+     */
     private void speicherePunkte() {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter("scores.txt", true))) {
-            writer.write(benutzername + ":" + totalPoints);
-            writer.newLine();
+        List<String> lines = new ArrayList<>();
+        String currentUserLine = benutzername + ":" + totalPoints;
+        boolean updated = false;
+
+        try (BufferedReader reader = new BufferedReader(new FileReader("Quiz/scores.txt"))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                if (line.startsWith(benutzername + ":")) {
+                    int existingPoints = Integer.parseInt(line.split(":")[1]);
+                    if (totalPoints > existingPoints) {
+                        lines.add(currentUserLine);
+                        updated = true;
+                    } else {
+                        lines.add(line);
+                    }
+                } else {
+                    lines.add(line);
+                }
+            }
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(this, "Fehler beim Lesen der Punkte: " + e.getMessage());
+            return;
+        }
+
+        if (!updated) {
+            lines.add(currentUserLine);
+        }
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("Quiz/scores.txt"))) {
+            for (String line : lines) {
+                writer.write(line);
+                writer.newLine();
+            }
         } catch (IOException e) {
             JOptionPane.showMessageDialog(this, "Fehler beim Speichern der Punkte: " + e.getMessage());
         }
+
+        JOptionPane.showMessageDialog(this, "Du hast es geschafft!", "Fertig", JOptionPane.INFORMATION_MESSAGE);
+        new Leaderboard(benutzername, avatarPfad);
+        this.dispose();
     }
 }

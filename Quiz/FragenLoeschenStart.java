@@ -6,12 +6,32 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Die Klasse {@code FragenLoeschenStart} stellt ein GUI-Fenster bereit, um eine Frage
+ * aus einer gegebenen Textdatei auszuwählen und zu löschen.
+ * <p>
+ * Jede Frage wird als Textblock im Format gespeichert:
+ * <pre>
+ * Frage: ...
+ * A: ...
+ * B: ...
+ * C: ...
+ * D: ...
+ * Richtig: ...
+ * </pre>
+ * mit einer Leerzeile nach jedem Block.
+ */
 public class FragenLoeschenStart extends JFrame {
 
     private JComboBox<String> frageDropdown;
     private String dateiname;
     private List<String> fragenBlöcke;
 
+    /**
+     * Erstellt das Fenster zur Anzeige und Auswahl von Fragen, die aus der Datei gelöscht werden können.
+     *
+     * @param dateiname Der Pfad zur Datei mit den gespeicherten Fragen.
+     */
     public FragenLoeschenStart(String dateiname) {
         this.dateiname = dateiname;
         this.fragenBlöcke = new ArrayList<>();
@@ -54,7 +74,6 @@ public class FragenLoeschenStart extends JFrame {
 
         loeschenBtn.addActionListener(e -> frageLoeschen());
 
-        // Zurück-Button
         gbc.gridx = 1;
         JButton zurueckBtn = new JButton("Zurück");
         zurueckBtn.setBackground(new Color(100, 149, 237));
@@ -72,6 +91,12 @@ public class FragenLoeschenStart extends JFrame {
         setVisible(true);
     }
 
+    /**
+     * Erstellt ein standardisiertes JLabel mit heller Schrift für Eingabefelder.
+     *
+     * @param text Der anzuzeigende Text.
+     * @return Ein fertig konfiguriertes JLabel.
+     */
     private JLabel createLabel(String text) {
         JLabel label = new JLabel(text);
         label.setForeground(new Color(220, 220, 220));
@@ -79,6 +104,10 @@ public class FragenLoeschenStart extends JFrame {
         return label;
     }
 
+    /**
+     * Lädt alle Fragenblöcke aus der Datei und befüllt das Dropdown-Menü
+     * mit den Fragezeilen (erste Zeile jedes Blocks).
+     */
     private void ladeFragen() {
         fragenBlöcke.clear();
         frageDropdown.removeAllItems();
@@ -103,6 +132,10 @@ public class FragenLoeschenStart extends JFrame {
         }
     }
 
+    /**
+     * Löscht die aktuell ausgewählte Frage aus der Datei.
+     * Die Datei wird anschließend mit den verbleibenden Fragen neu geschrieben.
+     */
     private void frageLoeschen() {
         int index = frageDropdown.getSelectedIndex();
         if (index < 0 || index >= fragenBlöcke.size()) {
@@ -123,6 +156,6 @@ public class FragenLoeschenStart extends JFrame {
         }
 
         JOptionPane.showMessageDialog(this, "Frage gelöscht!", "Erfolg", JOptionPane.INFORMATION_MESSAGE);
-        ladeFragen(); // neu laden
+        ladeFragen(); // Dropdown neu laden
     }
 }
