@@ -28,7 +28,7 @@ Richtig: A
 
 Frage: Wer singt den Song „Blinding Lights“?
 A: Justin Bieber
-B: The Weeknd
+B: The Weekend
 C: Shawn Mendes
 D: Drake
 Richtig: B
