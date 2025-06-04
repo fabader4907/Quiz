@@ -1,2 +1,1 @@
 fa:Quiz/avatars/avatar6.png
-Florian:Quiz/avatars/avatar5.png

@@ -1,8 +1,10 @@
 package Quiz;
 
+import javax.sound.sampled.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
@@ -44,6 +46,9 @@ public class QuizGame_Start extends Basis {
     /** Label zur Anzeige der aktuellen Punkte */
     private JLabel pointsLabel;
 
+    /** Musik */
+    private Clip clip;
+
     /**
      * Konstruktor: Initialisiert das Quiz-Spiel.
      *
@@ -55,6 +60,7 @@ public class QuizGame_Start extends Basis {
         super("Lyric!", new String[]{"A", "B", "C", "D"});
         this.benutzername = benutzername;
         this.avatarPfad = avatarPfad;
+        starteMusik("Quiz/music/come-on-boy.wav");
 
         // UI-Styling für Dialoge
         UIManager.put("OptionPane.messageFont", new Font("Segoe UI", Font.PLAIN, 16));
@@ -150,6 +156,18 @@ public class QuizGame_Start extends Basis {
             button.setFont(new Font("Arial", Font.BOLD, 24));
             button.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         }
+
+        // Musikhinweis unten rechts
+        JLabel musikHinweis = new JLabel("Musik: MondayHopes", SwingConstants.RIGHT);
+        musikHinweis.setFont(new Font("Arial", Font.ITALIC, 10));
+        musikHinweis.setForeground(new Color(180, 180, 180));
+        GridBagConstraints gbcMusik = new GridBagConstraints();
+        gbcMusik.gridx = 1;
+        gbcMusik.gridy = 3;
+        gbcMusik.anchor = GridBagConstraints.SOUTHEAST;
+        gbcMusik.insets = new Insets(0, 0, 5, 10);
+        add(musikHinweis, gbcMusik);
+
 
         // Countdown-Timer starten
         countdownTimer = new Timer(1000, e -> {
@@ -262,4 +280,56 @@ public class QuizGame_Start extends Basis {
             });
         }
     }
+
+    /**
+     * Startet die Hintergrundmusik aus einer angegebenen WAV-Datei.
+     * <p>
+     * Die Musik wird geladen und in einer Endlosschleife abgespielt (Dauerschleife).
+     * Es wird empfohlen, eine unkomprimierte WAV-Datei zu verwenden (z. B. PCM).
+     * </p>
+     *
+     * @param dateipfad Der Pfad zur Musikdatei im WAV-Format.
+     *                  Dies kann ein relativer Pfad (z. B. "musik.wav")
+     *                  oder ein absoluter Pfad (z. B. "C:\\Musik\\titel.wav") sein.
+     *
+     * @throws IllegalArgumentException wenn die Datei nicht existiert oder
+     *         ein Problem beim Abspielen auftritt.
+     */
+    private void starteMusik(String dateipfad) {
+        try {
+            File musikDatei = new File(dateipfad);
+            if (!musikDatei.exists()) {
+                System.err.println("Musikdatei nicht gefunden: " + dateipfad);
+                return;
+            }
+
+            AudioInputStream audioStream = AudioSystem.getAudioInputStream(musikDatei);
+            clip = AudioSystem.getClip();
+            clip.open(audioStream);
+            clip.loop(Clip.LOOP_CONTINUOUSLY); // Musik in Dauerschleife abspielen
+            clip.start();
+        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Beendet die aktuell laufende Hintergrundmusik, falls vorhanden.
+     */
+    private void stoppeMusik() {
+        if (clip != null && clip.isRunning()) {
+            clip.stop();
+            clip.close();
+        }
+    }
+
+    /**
+     * Überschreibt die dispose()-Methode, um beim Schließen die Musik zu stoppen.
+     */
+    @Override
+    public void dispose() {
+        stoppeMusik();
+        super.dispose();
+    }
+
 }

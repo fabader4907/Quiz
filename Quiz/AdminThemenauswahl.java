@@ -4,6 +4,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.geom.RoundRectangle2D;
+import java.io.File;
+import java.io.IOException;
 
 /**
  * Diese Klasse stellt das Admin-Menü zur Auswahl von Themenbereichen dar.

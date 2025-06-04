@@ -1,5 +1,6 @@
 package Quiz;
 
+import javax.sound.sampled.*;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
@@ -44,6 +45,7 @@ public class Hauptmenu extends JFrame {
     public Hauptmenu(String benutzername, String avatarPfad) {
         this.aktuellerAvatar = avatarPfad;
         init(benutzername);
+        starteMusik("Quiz/music/quiz-music.wav");
     }
 
     /**
