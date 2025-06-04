@@ -5,6 +5,9 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.geom.RoundRectangle2D;
+import java.io.File;
+import java.io.IOException;
+
 
 /**
  * Die Klasse {@code Hauptmenu} stellt das Hauptmenü des Musik-Quiz dar.
@@ -16,6 +19,7 @@ import java.awt.geom.RoundRectangle2D;
 public class Hauptmenu extends JFrame {
 
     private String aktuellerAvatar = "Quiz/avatars/avatar1.jpg";
+    private Clip clip;
 
     // Farbschema
     private final Color backgroundColorStart = new Color(30, 30, 50);
@@ -128,6 +132,7 @@ public class Hauptmenu extends JFrame {
         return panel;
     }
 
+
     /**
      * Erstellt das zentrale Panel mit Buttons zum Starten des Quiz, Leaderboard, Spieleranzahl und Logout.
      *
@@ -226,4 +231,55 @@ public class Hauptmenu extends JFrame {
 
         return btn;
     }
+    /**
+     * Startet die Hintergrundmusik aus einer angegebenen WAV-Datei.
+     * <p>
+     * Die Musik wird geladen und in einer Endlosschleife abgespielt (Dauerschleife).
+     * Es wird empfohlen, eine unkomprimierte WAV-Datei zu verwenden (z. B. PCM).
+     * </p>
+     *
+     * @param dateipfad Der Pfad zur Musikdatei im WAV-Format.
+     *                  Dies kann ein relativer Pfad (z. B. "musik.wav")
+     *                  oder ein absoluter Pfad (z. B. "C:\\Musik\\titel.wav") sein.
+     *
+     * @throws IllegalArgumentException wenn die Datei nicht existiert oder
+     *         ein Problem beim Abspielen auftritt.
+     */
+    private void starteMusik(String dateipfad) {
+        try {
+            File musikDatei = new File(dateipfad);
+            if (!musikDatei.exists()) {
+                System.err.println("Musikdatei nicht gefunden: " + dateipfad);
+                return;
+            }
+
+            AudioInputStream audioStream = AudioSystem.getAudioInputStream(musikDatei);
+            clip = AudioSystem.getClip();
+            clip.open(audioStream);
+            clip.loop(Clip.LOOP_CONTINUOUSLY); // Musik in Dauerschleife abspielen
+            clip.start();
+        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Beendet die aktuell laufende Hintergrundmusik, falls vorhanden.
+     */
+    private void stoppeMusik() {
+        if (clip != null && clip.isRunning()) {
+            clip.stop();
+            clip.close();
+        }
+    }
+
+    /**
+     * Überschreibt die dispose()-Methode, um beim Schließen die Musik zu stoppen.
+     */
+    @Override
+    public void dispose() {
+        stoppeMusik();
+        super.dispose();
+    }
+
 }

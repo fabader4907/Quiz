@@ -1,5 +1,6 @@
 package Quiz;
 
+import javax.sound.sampled.*;
 import javax.swing.*;
 import java.awt.*;
 import java.io.*;
@@ -23,6 +24,7 @@ import java.util.List;
  */
 public class FragenLoeschenStart extends JFrame {
 
+    private Clip clip;
     private JComboBox<String> frageDropdown;
     private String dateiname;
     private List<String> fragenBlöcke;
@@ -35,6 +37,8 @@ public class FragenLoeschenStart extends JFrame {
     public FragenLoeschenStart(String dateiname) {
         this.dateiname = dateiname;
         this.fragenBlöcke = new ArrayList<>();
+        // Musik starten
+        starteMusik("Quiz/music/Quiz-show.wav"); // Pfad zur WAV-Datei anpassen
 
         setTitle("Frage löschen");
         setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -158,4 +162,41 @@ public class FragenLoeschenStart extends JFrame {
         JOptionPane.showMessageDialog(this, "Frage gelöscht!", "Erfolg", JOptionPane.INFORMATION_MESSAGE);
         ladeFragen(); // Dropdown neu laden
     }
+    private void starteMusik(String dateipfad) {
+        try {
+            File musikDatei = new File(dateipfad);
+            if (!musikDatei.exists()) {
+                System.err.println("Musikdatei nicht gefunden: " + dateipfad);
+                return;
+            }
+
+            AudioInputStream audioStream = AudioSystem.getAudioInputStream(musikDatei);
+            clip = AudioSystem.getClip();
+            clip.open(audioStream);
+            clip.loop(Clip.LOOP_CONTINUOUSLY); // Musik in Dauerschleife abspielen
+            clip.start();
+        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Beendet die aktuell laufende Hintergrundmusik, falls vorhanden.
+     */
+    private void stoppeMusik() {
+        if (clip != null && clip.isRunning()) {
+            clip.stop();
+            clip.close();
+        }
+    }
+
+    /**
+     * Überschreibt die dispose()-Methode, um beim Schließen die Musik zu stoppen.
+     */
+    @Override
+    public void dispose() {
+        stoppeMusik();
+        super.dispose();
+    }
+
 }
